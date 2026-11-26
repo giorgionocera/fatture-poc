@@ -2,7 +2,7 @@
 
 Applicazione dimostrativa per un intervento dal vivo a CNA Latina (artigiani e piccole imprese, non tecnici). Chi presenta trascina una cartella con le 196 fatture elettroniche ricevute in un anno da un centro estetico inventato (Brezza Estetica S.r.l.); l'app le legge, mostra tre scoperte con una cifra finale di soldi recuperabili (2.733,66 €) e poi risponde a domande libere del pubblico, mostrando da dove viene ogni cifra. Dura 6 minuti, gira su un portatile (Apple M4 Pro, 48 GB, macOS).
 
-**Stato:** l'applicazione è costruita e gira in Docker (`./demo avvia`, porta 8002). I test automatici passano; la batteria delle 25 domande va ancora eseguita con il modello di frontiera (serve la chiave in `.env`). Comandi e struttura in `README.md`, scelte in `DECISIONI.md`.
+**Stato:** l'applicazione è costruita e gira in Docker (`./demo avvia`, porta 8002). I test automatici passano; sulla batteria delle 25 domande Sonnet 5.5 (profilo predefinito) ha fatto 24 su 25. Restano da provare riformulazioni e domande fuori dai dati. Comandi e struttura in `README.md`, scelte in `DECISIONI.md`.
 
 ## Dove sta cosa
 
@@ -63,7 +63,7 @@ Tutti gli altri numeri attesi stanno in `contesto/dati/risposte_attese.json`: i 
 ## Come si lavora qui
 
 - **Tutto gira nel contenitore.** `./demo test` per i test, `./demo prova [numeri]` per la batteria, `./demo domanda "..."` per una domanda sola, `./demo riavvia` dopo una modifica a `config.toml`. Il codice in `app/` è montato nel contenitore: una modifica a Python vuole `./demo riavvia`, una alla pagina si vede ricaricando.
-- **Sviluppo senza spendere**: `PROFILO=locale ./demo avvia` usa il modello locale su Ollama. Serve solo a provare la pagina: sulla batteria fa 8 su 25, i giudizi sul prompt si danno con il modello di frontiera.
+- **Sviluppo senza spendere**: `PROFILO=locale ./demo avvia` usa il modello locale su Ollama. Serve solo a provare la pagina: sulla batteria fa 8 su 25, i giudizi sul prompt si danno con il modello di frontiera (`./demo prova`, pochi minuti e pochi centesimi).
 - **Per guardare la pagina** serve un browser vero a 1920×1080; il caricamento si prova scegliendo la cartella `contesto/dati/fatture` dal riquadro di sinistra.
 
 - **Verifica del pacchetto** (deve dare un file identico a `contesto/dati/risposte_attese.json`):

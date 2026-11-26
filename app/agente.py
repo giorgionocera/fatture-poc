@@ -166,7 +166,8 @@ class Agente:
                 avvisa("Ricontrollo le cifre")
                 messaggi.append({"role": "user", "content":
                     "Queste cifre non compaiono nei risultati delle interrogazioni: " + ", ".join(sbagliate) +
-                    ". Riscrivi la risposta usando solo cifre presenti nei risultati; se ti serve un conto, fallo fare a un'interrogazione."})
+                    ". Se ti serve un conto, fallo fare a un'interrogazione. Poi scrivi da capo solo la risposta alla domanda, "
+                    "con le sole cifre presenti nei risultati, senza scuse e senza accennare a questa correzione."})
                 continue
             if ultima and ultima["risultato"]["righe"]:
                 return scheda("solo_dati", SOLO_DATI, tabella={"colonne": ultima["risultato"]["colonne"],

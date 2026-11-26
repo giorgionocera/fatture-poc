@@ -49,7 +49,7 @@ id = "frontiera"
 etichetta = "Frontiera"
 dove = "cloud"
 indirizzo = "https://api.runware.ai/v1"   # endpoint compatibile OpenAI
-modello = "anthropic:claude@haiku-5.5"
+modello = "anthropic:claude@sonnet-5.5"   # 24 su 25 sulla batteria (Haiku 5.5: da 21 a 23)
 chiave_env = "CHIAVE_FRONTIERA"   # la chiave sta nel file .env, non qui
 invia_temperatura = false         # questo modello accetta solo la temperatura predefinita
 
@@ -61,3 +61,12 @@ indirizzo = "http://host.docker.internal:11434/v1"       # Ollama sul portatile 
 modello = "gemma4:26b"
 chiave = "locale"
 parametri = { reasoning_effort = "none" }   # senza "ragionamento": risponde in pochi secondi invece che in decine
+
+[[profili]]
+id = "haiku"                      # alternativa più veloce e meno precisa: PROFILO=haiku ./demo avvia
+etichetta = "Frontiera · Haiku"
+dove = "cloud"
+indirizzo = "https://api.runware.ai/v1"
+modello = "anthropic:claude@haiku-5.5"
+chiave_env = "CHIAVE_FRONTIERA"
+invia_temperatura = false

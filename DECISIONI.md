@@ -61,7 +61,17 @@ Scelte non coperte dalla specifica, prese con il criterio "la più semplice e la
 
 ## Modelli
 
-- **Profilo di frontiera**: stesso indirizzo e stesso modello del `config.toml` della demo 1, da confermare. La chiave non è nel repository: senza `.env` la pagina funziona fino alla prima analisi (con le frasi del codice) e alle domande risponde con un messaggio chiaro.
+- **Profilo di frontiera: Claude Sonnet 5.5** (`anthropic:claude@sonnet-5.5`, stesso endpoint compatibile OpenAI della demo 1). Scelto sulla batteria delle 25 domande del 26/11/2026, dopo tre giri di affinamento del prompt:
+
+  | Modello | Giuste su 25 | Tempo medio | Tempo massimo |
+  | --- | --- | --- | --- |
+  | Sonnet 5.5 | 24 (prima dell'ultimo ritocco: 22, di cui 2 contate male dal giudice) | 7,0 s | 25,7 s |
+  | Haiku 5.5 | 21 (nel giro precedente 23) | 4,5 s | 8,3 s |
+
+  In nessun giro, con nessuno dei due, è andata a schermo una cifra sbagliata: le risposte non giuste sono incomplete (manca una cifra secondaria) o, per Haiku, una spesa totale aggiunta alla domanda sul fatturato. Sonnet è più costante nel capire cosa serve; Haiku cambia di più da un giro all'altro. Il prezzo è la velocità: Sonnet ha avuto una domanda a 25,7 secondi (la stessa che negli altri giri ne ha presi 5), oltre il limite di 20. Haiku resta come profilo `haiku` (`PROFILO=haiku ./demo avvia`).
+- **Una prova sola per modello non è una misura**: i giri danno risultati diversi (Haiku 19, 23, 21; Sonnet 21, 22, 24, con il prompt che cambiava). Prima del palco conviene ripetere `./demo prova` due o tre volte sul portatile e con la rete della sala.
+- **Temperatura**: non viene inviata (`invia_temperatura = false`), perché questi modelli accettano solo quella predefinita. La specifica chiede zero: non è applicabile con questo fornitore.
 - **Profilo locale (`gemma4:26b` su Ollama): solo per lo sviluppo, non per il palco.** Sulla batteria: 8 domande giuste su 25 senza "ragionamento" (2–9 secondi a domanda); con il ragionamento acceso 17–33 secondi a domanda, oltre il limite di 20. Il controllo delle cifre impedisce comunque che una cifra inventata vada a schermo, ma troppe domande restano senza una risposta utile. Si attiva con `PROFILO=locale ./demo avvia`.
 - **`parametri` nel profilo**: valori in più passati al modello così come sono (per il locale, `reasoning_effort = "none"`).
-- **La batteria con il modello di frontiera non è ancora stata eseguita**: manca la chiave. È il primo test da fare (`./demo prova`).
+- **Il giudice della batteria** (`app/cli.py`) segna "giusta" solo se la risposta contiene tutte le cifre attese; accetta i numeri scritti in lettere ("sei fornitori") e la stessa cifra con più decimali (52,43% per 52,4%). "Incompleta" vuol dire che manca una cifra, non che ce ne sia una sbagliata.
+- **Non ancora eseguiti**: le riformulazioni di ogni domanda e le dieci domande fuori dai dati (sezione 9 della specifica).

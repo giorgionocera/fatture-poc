@@ -40,7 +40,9 @@ def cifre_presenti(testo: str, attese: list[float]) -> list[float]:
     letture += [(float(v), 0) for parola, v in IN_LETTERE.items() if re.search(rf"(?i)\b{parola}\b", testo)]
     mancanti = []
     for attesa in attese:
-        if not any(abs(abs(attesa) - n) <= 0.5 * 10 ** -d + 1e-9 for n, d in letture):
+        decimali = len(str(attesa).split(".")[1]) if "." in str(attesa) and not float(attesa).is_integer() else 0
+        # vale anche la stessa cifra scritta con più decimali: 52,43% per 52,4%
+        if not any(abs(abs(attesa) - n) <= 0.5 * 10 ** -d + 1e-9 or abs(round(n, decimali) - abs(attesa)) <= 1e-9 for n, d in letture):
             mancanti.append(attesa)
     return mancanti
 

@@ -1,0 +1,23 @@
+name: demo-fatture
+services:
+  app:
+    build: .
+    image: demo-fatture
+    init: true
+    ports:
+      - "127.0.0.1:8002:8002"   # raggiungibile solo da questo computer
+    env_file:
+      - path: .env              # CHIAVE_FRONTIERA=...
+        required: false
+    environment:
+      PROFILO: ${PROFILO:-}     # facoltativa: forza un profilo di modello (frontiera, locale)
+    extra_hosts:
+      - "host.docker.internal:host-gateway"   # il modello locale gira sul portatile, fuori dal contenitore
+    volumes:
+      - ./lavoro:/app/lavoro
+      - ./registrazioni:/app/registrazioni
+      - ./config.toml:/app/config.toml:ro
+      - ./prompt_sistema.txt:/app/prompt_sistema.txt:ro
+      - ./app:/app/app:ro
+      - ./tests:/app/tests:ro
+      - ./contesto:/app/contesto:ro

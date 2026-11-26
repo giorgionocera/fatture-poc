@@ -1,0 +1,46 @@
+#!/bin/bash
+# Demo 2 – Le fatture che parlano. Tutti i comandi della demo.
+set -e
+cd "$(dirname "$0")"
+INDIRIZZO="http://localhost:8002"
+
+attendi() {
+  for _ in $(seq 1 40); do
+    curl -fs "$INDIRIZZO/api/stato" >/dev/null 2>&1 && return 0
+    sleep 0.5
+  done
+  echo "L'applicazione non risponde. Guarda: ./demo diario"; return 1
+}
+
+case "${1:-}" in
+  avvia)
+    [ -f .env ] || echo "Attenzione: manca il file .env con la chiave del modello (vedi .env.example)."
+    docker compose up -d --build
+    attendi && echo "Pronta: $INDIRIZZO" && { [ "${2:-}" = "--senza-browser" ] || open "$INDIRIZZO"; } ;;
+  ferma)    docker compose down ;;
+  riavvia)  docker compose up -d --force-recreate && attendi && echo "Riavviata: $INDIRIZZO" ;;
+  reset)    curl -fsS -X POST "$INDIRIZZO/api/reset" >/dev/null && echo "Stato iniziale: nessuna fattura caricata." ;;
+  test)     docker compose run --rm --no-deps app python -m pytest "${@:2}" ;;
+  verifica) docker compose run --rm --no-deps app python -m app.cli verifica ;;
+  prova)    docker compose run --rm --no-deps app python -m app.cli prova "${@:2}" ;;
+  domanda)  docker compose run --rm --no-deps app python -m app.cli domanda "${@:2}" ;;
+  registro) tail -n "${2:-40}" lavoro/registro.jsonl ;;
+  diario)   docker compose logs --tail 80 app ;;
+  *) cat <<AIUTO
+Uso: ./demo <comando>
+
+  avvia            costruisce e accende l'applicazione, poi apre $INDIRIZZO
+  ferma            la spegne
+  riavvia          la riaccende (dopo una modifica a config.toml o a .env)
+  reset            riporta la pagina allo stato iniziale, senza fatture
+  test             test automatici su caricamento, regole, strumenti e controllo delle cifre
+  verifica         numeri del caricamento e totale recuperabile
+  prova [numeri]   lancia le 25 domande di prova e scrive lavoro/resoconto_prova.md
+  domanda "..."    una domanda da riga di comando
+  registro [n]     ultime righe del registro di domande, interrogazioni e risultati
+  diario           messaggi del server
+
+Per usare il modello locale invece di quello di frontiera: PROFILO=locale ./demo avvia
+AIUTO
+  ;;
+esac

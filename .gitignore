@@ -21,3 +21,7 @@ venv/
 
 # Impostazioni locali di Claude Code
 .claude/settings.local.json
+
+# Cartella di lavoro: fatture caricate, base dati, stato, registro, resoconti
+lavoro/*
+!lavoro/.gitkeep

@@ -1,0 +1,63 @@
+# Configurazione della demo: dati dell'impresa e profili di modello.
+# Dopo una modifica: ./demo riavvia
+
+[impresa]
+# Impresa inventata, nome provvisorio: si cambia solo qui.
+nome = "Brezza Estetica S.r.l."
+sigla = "BE"
+attivita = "Centro estetico · Latina"
+descrizione = "un centro estetico di Latina"   # usata nel prompt di sistema
+titolare = "la titolare"                        # usata nel prompt di sistema
+dicitura = "Dati dimostrativi · impresa, fornitori e prezzi inventati"
+
+[impresa.tema]
+accento = "#E8452C"      # corallo: è il colore di questa applicazione
+evidenza = "#C4F030"     # verde lime: riservato alla cifra trovata
+
+[dati]
+fornitori = "contesto/dati/fornitori.csv"   # categoria e regione di ogni fornitore, per partita IVA
+
+[analisi]
+soglia_aumento_percento = 5
+soglia_differenza_percento = 5
+parole_fine_contratto = ["ritiro", "fine noleggio", "disdetta", "cessazione"]
+# Gli aumenti in queste categorie si mostrano ma restano fuori dal totale recuperabile:
+# sono tariffe, non prezzi di un fornitore che si può cambiare domani.
+categorie_fuori_totale = ["Energia e acqua"]
+attesa_frasi_secondi = 20        # oltre, le frasi delle tre scoperte le scrive il codice
+
+[pagina]
+secondi_per_casella = 1.8        # durata minima a schermo di ogni casella del caricamento
+secondi_tra_scoperte = 0         # 0 = va avanti chi presenta (freccia destra, spazio o invio); altrimenti pausa in secondi
+suggerimento = "Chiedi qualsiasi cosa su queste fatture"
+
+[modello]
+profilo_iniziale = "frontiera"
+temperatura = 0
+attesa_massima_secondi = 60
+passi_massimi = 8                # risposte del modello per ogni domanda
+tentativi_interrogazione = 3     # interrogazioni sbagliate ammesse per ogni domanda
+righe_massime = 200
+secondi_interrogazione = 5
+domande_ricordate = 4            # scambi precedenti passati al modello ("e di che colore?")
+
+# I due profili usano lo stesso protocollo (compatibile OpenAI, chat completions con strumenti),
+# lo stesso prompt (prompt_sistema.txt) e gli stessi strumenti.
+
+[[profili]]
+id = "frontiera"
+etichetta = "Frontiera"
+dove = "cloud"
+indirizzo = "https://api.runware.ai/v1"   # endpoint compatibile OpenAI
+modello = "anthropic:claude@haiku-5.5"
+chiave_env = "CHIAVE_FRONTIERA"   # la chiave sta nel file .env, non qui
+invia_temperatura = false         # questo modello accetta solo la temperatura predefinita
+
+[[profili]]
+id = "locale"
+etichetta = "Locale · pesi aperti"
+dove = "locale"
+indirizzo = "http://host.docker.internal:11434/v1"       # Ollama sul portatile (LM Studio: porta 1234)
+modello = "gemma4:26b"
+chiave = "locale"
+parametri = { reasoning_effort = "none" }   # senza "ragionamento": risponde in pochi secondi invece che in decine

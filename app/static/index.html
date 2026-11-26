@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="data:,">
+<title>Le fatture che parlano</title>
+<link rel="stylesheet" href="/static/stile.css">
+</head>
+<body>
+<div id="palco">
+  <header class="testata">
+    <div class="marchio"><span class="sigla" id="sigla"></span><span id="nome-impresa"></span><span class="attivita" id="attivita"></span></div>
+    <div class="dicitura"><span id="spia-replay" class="spia" hidden title="Replay attivo"></span><span id="dicitura"></span></div>
+  </header>
+
+  <main class="zone">
+    <section class="zona sinistra" aria-label="Le fatture">
+      <div class="etichetta">[ Le fatture ]</div>
+      <div id="trascina" class="trascina" role="button" tabindex="0">
+        <div class="trascina-icona" aria-hidden="true">↓</div>
+        <div class="trascina-testo">Trascina qui la cartella delle fatture</div>
+        <div class="trascina-nota" id="trascina-nota">oppure clicca per sceglierla</div>
+        <input type="file" id="scegli-cartella" webkitdirectory multiple hidden>
+      </div>
+      <div id="caricate" class="caricate" hidden>
+        <div class="contatore"><span id="conta-file">0</span><span class="contatore-nota">file letti</span></div>
+        <dl class="riassunto">
+          <div><dt>Periodo</dt><dd id="periodo">–</dd></div>
+          <div><dt>Fornitori</dt><dd id="fornitori">–</dd></div>
+        </dl>
+        <div class="elenco" id="elenco"></div>
+      </div>
+    </section>
+
+    <section class="zona centro" aria-label="La conversazione">
+      <div id="benvenuto" class="benvenuto">
+        <div class="etichetta">[ Un anno di fatture ]</div>
+        <h1>Dove vanno i miei soldi,<br><span class="accento">e cosa non torna?</span></h1>
+      </div>
+      <div id="caselle" class="caselle" hidden>
+        <div class="casella" data-n="1"><div class="etichetta">[ 01 ]</div><h2>Legge le fatture</h2><p class="casella-riga"></p></div>
+        <div class="casella" data-n="2"><div class="etichetta">[ 02 ]</div><h2>Le mette in ordine</h2><p class="casella-riga"></p></div>
+        <div class="casella" data-n="3"><div class="etichetta">[ 03 ]</div><h2>Cerca cosa non torna</h2><p class="casella-riga"></p></div>
+      </div>
+      <div id="conversazione" class="conversazione"></div>
+      <button type="button" id="avanti" class="avanti" hidden>Prossima scoperta <span aria-hidden="true">→</span></button>
+      <form id="chiedi" class="chiedi" autocomplete="off">
+        <input id="domanda" type="text" maxlength="300" aria-label="Scrivi una domanda" autofocus>
+        <button type="submit" aria-label="Chiedi">Chiedi <span aria-hidden="true">→</span></button>
+      </form>
+    </section>
+
+    <section class="zona destra" aria-label="Trovato finora">
+      <div class="trovato">
+        <div class="etichetta">[ Trovato finora ]</div>
+        <div class="trovato-cifra" id="trovato-cifra">0,00 €</div>
+        <div class="trovato-nota">da recuperare o risparmiare</div>
+      </div>
+      <div class="voci" id="voci"></div>
+      <div class="futuro" id="futuro" hidden>
+        <div class="etichetta scura">[ Peseranno ancora ]</div>
+        <div id="futuro-voci"></div>
+      </div>
+    </section>
+  </main>
+</div>
+<div id="fumetto" class="fumetto" hidden></div>
+<script src="/static/grafici.js"></script>
+<script src="/static/pagina.js"></script>
+</body>
+</html>

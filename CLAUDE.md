@@ -2,7 +2,7 @@
 
 Applicazione dimostrativa per un intervento dal vivo a CNA Latina (artigiani e piccole imprese, non tecnici). Chi presenta trascina una cartella con le 196 fatture elettroniche ricevute in un anno da un centro estetico inventato (Brezza Estetica S.r.l.); l'app le legge, mostra tre scoperte con una cifra finale di soldi recuperabili (2.733,66 €) e poi risponde a domande libere del pubblico, mostrando da dove viene ogni cifra. Dura 6 minuti, gira su un portatile (Apple M4 Pro, 48 GB, macOS).
 
-**Stato:** il repository contiene solo il pacchetto di contesto in `contesto/`. L'applicazione è da costruire, nella radice del repository.
+**Stato:** l'applicazione è costruita e gira in Docker (`./demo avvia`, porta 8002). I test automatici passano; la batteria delle 25 domande va ancora eseguita con il modello di frontiera (serve la chiave in `.env`). Comandi e struttura in `README.md`, scelte in `DECISIONI.md`.
 
 ## Dove sta cosa
 
@@ -62,11 +62,15 @@ Tutti gli altri numeri attesi stanno in `contesto/dati/risposte_attese.json`: i 
 
 ## Come si lavora qui
 
+- **Tutto gira nel contenitore.** `./demo test` per i test, `./demo prova [numeri]` per la batteria, `./demo domanda "..."` per una domanda sola, `./demo riavvia` dopo una modifica a `config.toml`. Il codice in `app/` è montato nel contenitore: una modifica a Python vuole `./demo riavvia`, una alla pagina si vede ricaricando.
+- **Sviluppo senza spendere**: `PROFILO=locale ./demo avvia` usa il modello locale su Ollama. Serve solo a provare la pagina: sulla batteria fa 8 su 25, i giudizi sul prompt si danno con il modello di frontiera.
+- **Per guardare la pagina** serve un browser vero a 1920×1080; il caricamento si prova scegliendo la cartella `contesto/dati/fatture` dal riquadro di sinistra.
+
 - **Verifica del pacchetto** (deve dare un file identico a `contesto/dati/risposte_attese.json`):
   ```
   python3 contesto/strumenti/risposte_attese.py contesto/dati/fatture contesto/dati/fornitori.csv /tmp/fatture.db /tmp/verifica.json
   ```
-- **Scelte libere** (linguaggio, librerie, colore d'accento, struttura): suggerito Python con SQLite, come gli script di riferimento. Ogni scelta non coperta dalla specifica va annotata in `DECISIONI.md` nella radice, creandolo alla prima scelta.
+- **Ogni scelta non coperta dalla specifica va annotata in `DECISIONI.md`**, nella sezione giusta.
 - **Moduli separati e riconoscibili** per collegamento al modello, configurazione e stile: in futuro potrebbero finire in una cartella comune alle due demo.
 - **Modello**: protocollo compatibile OpenAI con chiamata di strumenti, temperatura zero. Indirizzo, chiave e nome stanno nel file di configurazione, che non va nel repository (va versionato solo un esempio senza chiave).
 - **Limiti per domanda**: 8 passi, 3 tentativi di interrogazione. Ogni domanda, interrogazione e risultato finisce nel file di registro.

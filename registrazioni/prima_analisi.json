@@ -1,10 +1,10 @@
 {
   "frasi": {
-    "soldi": "Affitto e noleggio macchinari sono le voci più pesanti; seguono prodotti per trattamenti ed energia e acqua.",
-    "prezzi": "Linea Pelle Distribuzione ha alzato cera e crema di circa il 15% con 7 ritocchi; Luce Pontina Energia +26,4% da luglio.",
-    "non_torna": "Una fattura Dermovita arrivata due volte, 4 canoni TecnoBeauty dopo il ritiro e il gel costruttore pagato 24 o 28,3 euro."
+    "soldi": "Affitto e noleggio macchinari sono le spese più grandi, con il 24,8% e il 18,2%; seguono prodotti per trattamenti ed energia.",
+    "prezzi": "Linea Pelle ha ritoccato 7 volte cera e crema, circa +15%. Luce Pontina ha alzato la luce del 26,4% da luglio.",
+    "non_torna": "Dermovita: fattura 2025-330 doppia. TecnoBeauty: 4 canoni dopo il ritiro. Lo stesso gel costa 24€ o 28,30€ a seconda del fornitore."
   },
-  "secondi": 9.7,
+  "secondi": 11.6,
   "modello": "anthropic:claude@sonnet-5.5",
-  "registrata_il": "2026-11-26T09:53:41"
+  "registrata_il": "2026-11-26T10:24:56"
 }

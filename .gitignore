@@ -25,3 +25,6 @@ venv/
 # Cartella di lavoro: fatture caricate, base dati, stato, registro, resoconti
 lavoro/*
 !lavoro/.gitkeep
+
+# Video generati con ./demo video
+video/

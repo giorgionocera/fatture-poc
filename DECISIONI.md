@@ -42,6 +42,7 @@ Scelte non coperte dalla specifica, prese con il criterio "la più semplice e la
 - **Controllo delle cifre** (`app/cifre.py`). Una cifra è buona se coincide, a meno di arrotondamento e formato, con: un valore dei risultati (anche dentro un testo, come "conf. 100 pz" o una data); il numero di righe di un risultato; un numero scritto nella domanda o nelle interrogazioni di quella domanda (le costanti che il modello ha messo nel filtro, per esempio il 100 di "confezioni × 100"). I numeri in lettere non si controllano. Una frazione vale come percentuale solo se il numero è seguito da "%".
 - **Dopo la riscrittura** il modello può fare altre interrogazioni, dentro il limite di 8 passi. Se la cifra non torna ancora: solo la tabella, con "Ecco i dati, giudicate voi". Se non c'è nessuna tabella: invito a riformulare.
 - **Provenienza** (`app/provenienza.py`). Dall'ultima interrogazione si prende la SELECT che legge fatture o righe, se ne tengono tabelle e filtro e si chiede alla base dati quali fatture passano. Per le righe l'importo mostrato è la somma delle righe che contano, non il totale della fattura. Se la risposta viene da `analisi_iniziale`, le fatture sono quelle dei casi di cui il testo nomina il fornitore. Un'interrogazione senza filtro (una percentuale sul totale) mostra tutte le fatture: è vero, anche se poco utile.
+- **La provenienza viene dall'interrogazione che contiene la cifra principale**, non per forza dall'ultima. Trovato registrando il video: a "quanto spendo di caffè" l'agente ha guardato prima le capsule (552,00 €) e poi tutto il fornitore (827,50 €), e "Come l'ho calcolato" mostrava le fatture intere del fornitore, che non sommavano alla cifra. Se nessuna interrogazione contiene la cifra, vale l'ultima.
 - **Memoria**: al modello passano gli ultimi 4 scambi riusciti (`domande_ricordate`), per domande come "di che colore ne compro di più?" dopo gli smalti.
 - **Sola lettura a tre livelli**: base dati aperta in sola lettura, solo SELECT (o WITH … SELECT), e un controllo di SQLite che rifiuta ogni azione diversa dalla lettura.
 - **Grafico**: al massimo 24 punti; i suoi valori contano come risultati per il controllo delle cifre.
@@ -63,6 +64,15 @@ Scelte non coperte dalla specifica, prese con il criterio "la più semplice e la
 - **Cosa si registra**: le tre frasi del modello e il tempo impiegato (`registrazioni/prima_analisi.json`), a ogni prima analisi riuscita. In replay le regole girano davvero, quindi le cifre sono sempre quelle delle fatture caricate.
 - **Attivazione**: Opzione+R; un puntino grigio in alto a destra indica che è attivo.
 - **La registrazione inclusa** viene dal modello locale usato nello sviluppo: si sostituisce da sola alla prima analisi riuscita con il modello di frontiera.
+
+## Video
+
+- **`./demo video`** registra la demo vera (app accesa, modello vero) in `video/demo_fatture.mp4`, 1920×1080 a 30 fotogrammi al secondo, circa 70 secondi: pagina vuota, caricamento, tre scoperte (avanzando con il pulsante "Prossima scoperta"), cifra finale, una domanda scritta lettera per lettera, risposta e "Come l'ho calcolato" aperto. La domanda predefinita è "Quanto spendo di caffè?"; un'altra si passa come argomento.
+- **Contenitore a parte** (`Dockerfile.video`, servizio `video` di `compose.yaml` con profilo dedicato): Chromium, Playwright e ffmpeg servono solo qui, quindi l'immagine dell'app resta leggera e `./demo avvia` non li costruisce. Nessuna dipendenza dalla demo 1.
+- **Fotogrammi dallo screencast di Chromium**, montati con ffmpeg secondo i loro tempi: i tempi del video sono quelli veri, compresa l'attesa del modello sulla casella 03.
+- **Cursore disegnato nella pagina** (il browser senza interfaccia non ne mostra uno), con traiettorie morbide e un'onda corallo a ogni clic. La cartella si sceglie con un clic sul riquadro: il trascinamento dal Finder non si può simulare.
+- **Il video usa la sessione dell'app**: per quel minuto una pagina aperta nel browser mostra la stessa esecuzione. Prima e dopo la registrazione l'app torna allo stato iniziale.
+- **L'indirizzo dell'app nella rete dei contenitori è `fatture`**, non `app`: `.app` è un dominio che Chromium apre solo in https.
 
 ## Modelli
 

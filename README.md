@@ -64,6 +64,7 @@ Se l'altro computer deve solo guardare, è più semplice duplicare lo schermo.
 | `./demo riformulazioni` | Le 25 domande chieste in altri due modi; resoconto in `lavoro/resoconto_riformulazioni.md` |
 | `./demo fuori` | Dieci domande su cose che nelle fatture non ci sono; resoconto in `lavoro/resoconto_fuori_dai_dati.md` |
 | `./demo domanda "..."` | Una domanda da riga di comando, con interrogazioni e fatture |
+| `./demo video ["domanda"]` | Registra un video della demo in `video/demo_fatture.mp4` (circa 70 secondi): caricamento, tre scoperte, una domanda (predefinita: il caffè) con "Come l'ho calcolato". Usa l'app accesa e il modello vero; alla fine riporta l'app allo stato iniziale |
 | `./demo registro [n]` | Ultime righe del registro (`lavoro/registro.jsonl`) |
 | `./demo diario` | Messaggi del server |
 
@@ -83,7 +84,7 @@ Se l'altro computer deve solo guardare, è più semplice duplicare lo schermo.
 | Indipendenza | Clonare il repository su un portatile senza la demo 1 e fare `./demo avvia` | da eseguire |
 | Proiettore | Guardare dall'ultima fila cifre, grafici e "Come l'ho calcolato" | da eseguire in sala |
 
-Il video di riserva lo registra chi presenta, con tre domande libere.
+Il video di riserva lo registra chi presenta, con tre domande libere. `./demo video` ne fa uno automatico, utile come anteprima o per mandarlo a chi organizza, ma non lo sostituisce: gira senza interfaccia, con il cursore disegnato e la cartella scelta dal riquadro invece che trascinata.
 
 ## Com'è fatta
 

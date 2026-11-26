@@ -1,0 +1,14 @@
+# Solo per ./demo video: browser senza interfaccia e montaggio. L'app non ne ha bisogno.
+FROM python:3.13-slim
+
+RUN apt-get update \
+ && apt-get install -y --no-install-recommends chromium ffmpeg \
+ && rm -rf /var/lib/apt/lists/*
+
+ENV TZ=Europe/Rome \
+    PYTHONUNBUFFERED=1 \
+    PYTHONDONTWRITEBYTECODE=1
+
+WORKDIR /app
+RUN pip install --no-cache-dir playwright==1.49.1
+CMD ["python", "-m", "app.video"]

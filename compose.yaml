@@ -14,6 +14,9 @@ services:
       PROFILO: ${PROFILO:-}     # facoltativa: forza un profilo di modello (frontiera, locale)
     extra_hosts:
       - "host.docker.internal:host-gateway"   # il modello locale gira sul portatile, fuori dal contenitore
+    networks:
+      default:
+        aliases: [fatture]      # il nome con cui la trova il contenitore del video ("app" è un dominio che Chromium apre solo in https)
     volumes:
       - ./lavoro:/app/lavoro
       - ./registrazioni:/app/registrazioni
@@ -23,3 +26,19 @@ services:
       - ./tests:/app/tests:ro
       - ./prove:/app/prove:ro
       - ./contesto:/app/contesto:ro
+
+  # Solo per ./demo video: non parte con ./demo avvia.
+  video:
+    profiles: ["video"]
+    build:
+      context: .
+      dockerfile: Dockerfile.video
+    image: demo-fatture-video
+    init: true
+    environment:
+      INDIRIZZO_APP: http://fatture:8002
+      DOMANDA_VIDEO: ${DOMANDA_VIDEO:-}
+    volumes:
+      - ./app:/app/app:ro
+      - ./contesto:/app/contesto:ro
+      - ./video:/app/video

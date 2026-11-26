@@ -61,6 +61,10 @@ case "${1:-}" in
   prova)    docker compose run --rm --no-deps app python -m app.cli prova "${@:2}" ;;
   riformulazioni|fuori) docker compose run --rm --no-deps app python -m app.cli "$1" ;;
   domanda)  docker compose run --rm --no-deps app python -m app.cli domanda "${@:2}" ;;
+  video)
+    curl -fs "$INDIRIZZO/api/stato" >/dev/null 2>&1 || { echo "Prima accendi l'applicazione: ./demo avvia"; exit 1; }
+    [ -n "${2:-}" ] && export DOMANDA_VIDEO="$2"
+    docker compose --profile video run --rm --build video ;;
   registro) tail -n "${2:-40}" lavoro/registro.jsonl ;;
   diario)   docker compose logs --tail 80 app ;;
   *) cat <<AIUTO
@@ -77,6 +81,7 @@ Uso: ./demo <comando>
   riformulazioni   le 25 domande chieste in altri due modi, una formale e una colloquiale
   fuori            dieci domande su cose che nelle fatture non ci sono
   domanda "..."    una domanda da riga di comando
+  video ["..."]    registra un video della demo in video/demo_fatture.mp4 (domanda predefinita: il caffè)
   registro [n]     ultime righe del registro di domande, interrogazioni e risultati
   diario           messaggi del server
 

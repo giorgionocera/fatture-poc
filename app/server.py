@@ -79,6 +79,32 @@ def leggi():
                         headers={"Cache-Control": "no-store"})
 
 
+@app.get("/fattura/{nome}")
+def pagina_fattura(nome: str):
+    return FileResponse(STATICI / "fattura.html", headers={"Cache-Control": "no-store"})
+
+
+@app.get("/api/fattura/{nome}")
+def leggi_fattura(nome: str):
+    """Una fattura caricata, in forma leggibile, con il testo XML originale."""
+    percorso = CARTELLA_FATTURE / Path(nome).name
+    if percorso.suffix.lower() != ".xml" or not percorso.is_file():
+        return JSONResponse({"errore": "Questa fattura non è tra quelle caricate."}, status_code=404)
+    try:
+        fattura = caricamento.leggi_fattura(percorso)
+    except Exception:
+        return JSONResponse({"errore": "Non riesco a leggere questo file."}, status_code=422)
+    scheda = next((f for f in stato["fatture"] if f["file"] == percorso.name), {})
+    fattura["categoria"] = scheda.get("categoria")
+    fattura["doppione"] = bool(scheda.get("doppione"))
+    gemelle = [f["file"] for f in stato["fatture"] if f["file"] != percorso.name and f["fornitore"] == scheda.get("fornitore")
+               and f["numero"] == scheda.get("numero") and f["data"] == scheda.get("data")]
+    fattura["gemella"] = gemelle[0] if gemelle else None
+    fattura["xml"] = percorso.read_text(encoding="utf-8")
+    fattura["tema"] = cfg["impresa"].get("tema", {})
+    return JSONResponse(fattura, headers={"Cache-Control": "no-store"})
+
+
 @app.post("/api/carica")
 async def carica(richiesta: Request):
     """Riceve i file della cartella trascinata e costruisce la base dati. Nessun modello coinvolto."""

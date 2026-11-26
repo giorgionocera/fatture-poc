@@ -24,6 +24,8 @@ Modello, indirizzo e nome dell'impresa stanno in `config.toml`; la chiave sta in
 3. Le tre caselle si accendono, poi compare la prima scoperta. **Per passare alla scoperta successiva: freccia destra** (oppure spazio o invio a campo vuoto, oppure clic su "Prossima scoperta"). La cifra a destra sale a ogni scoperta fino a 2.733,66 €.
 4. "Come l'ho calcolato" si apre con un clic e mostra le fatture da cui viene la cifra.
 5. Scrivi le domande nel campo in basso e premi invio.
+6. Un clic su una fattura dell'elenco, o sul suo numero in "Come l'ho calcolato", la apre in un'altra scheda in forma leggibile.
+7. Per controllare una risposta, cerca il fornitore nel campo sopra l'elenco di sinistra: restano le sue fatture, con il numero e la somma senza IVA.
 
 | Tasto | Cosa fa |
 | --- | --- |
@@ -80,7 +82,7 @@ app/
   registro.py      registro di domande, interrogazioni e risultati
   server.py        le pagine e le API
   cli.py           batteria di prova e comandi da terminale
-  static/          pagina, stile, grafici, caratteri (tutto locale)
+  static/          pagina, lettore della fattura, stile, grafici, caratteri (tutto locale)
 tests/             test automatici
 contesto/          specifica, fatture e numeri attesi (non si modifica)
 lavoro/            fatture caricate, base dati, stato, registro, resoconti (non versionata)

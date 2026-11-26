@@ -114,3 +114,37 @@ def elenco_fatture(db) -> list[dict]:
                        "FROM fatture ORDER BY data, id").fetchall()
     chiavi = ["id", "file", "fornitore", "numero", "data", "imponibile", "tipo", "doppione", "categoria"]
     return [dict(zip(chiavi, r)) for r in righe]
+
+
+def leggi_fattura(percorso) -> dict:
+    """Una fattura XML in forma leggibile, così com'è scritta nel file (senza cambi di segno)."""
+    radice = ET.parse(percorso).getroot()
+    testata = radice.find("FatturaElettronicaHeader")
+    corpo = radice.find("FatturaElettronicaBody")
+    gen = corpo.find("DatiGenerali/DatiGeneraliDocumento")
+    numero = lambda nodo, campo: float(_testo(nodo, campo)) if _testo(nodo, campo) is not None else None
+
+    def soggetto(nodo):
+        return {"nome": _testo(nodo, "DatiAnagrafici/Anagrafica/Denominazione"),
+                "partita_iva": _testo(nodo, "DatiAnagrafici/IdFiscaleIVA/IdCodice"),
+                "indirizzo": _testo(nodo, "Sede/Indirizzo"), "cap": _testo(nodo, "Sede/CAP"),
+                "comune": _testo(nodo, "Sede/Comune"), "provincia": _testo(nodo, "Sede/Provincia")}
+
+    pagamento = corpo.find("DatiPagamento")
+    dettaglio = pagamento.find("DettaglioPagamento") if pagamento is not None else None
+    return {
+        "file": Path(percorso).name,
+        "tipo": _testo(gen, "TipoDocumento"), "numero": _testo(gen, "Numero"), "data": _testo(gen, "Data"),
+        "totale": numero(gen, "ImportoTotaleDocumento"), "causale": _testo(gen, "Causale"),
+        "fornitore": soggetto(testata.find("CedentePrestatore")),
+        "cliente": soggetto(testata.find("CessionarioCommittente")),
+        "righe": [{"descrizione": _testo(r, "Descrizione"), "quantita": numero(r, "Quantita"), "unita": _testo(r, "UnitaMisura"),
+                   "prezzo": numero(r, "PrezzoUnitario"), "importo": numero(r, "PrezzoTotale"), "aliquota": numero(r, "AliquotaIVA")}
+                  for r in corpo.findall("DatiBeniServizi/DettaglioLinee")],
+        "riepiloghi": [{"aliquota": numero(r, "AliquotaIVA"), "natura": _testo(r, "Natura"),
+                        "imponibile": numero(r, "ImponibileImporto"), "imposta": numero(r, "Imposta")}
+                       for r in corpo.findall("DatiBeniServizi/DatiRiepilogo")],
+        "pagamento": None if dettaglio is None else {
+            "modalita": _testo(dettaglio, "ModalitaPagamento"), "scadenza": _testo(dettaglio, "DataScadenzaPagamento"),
+            "importo": numero(dettaglio, "ImportoPagamento")},
+    }

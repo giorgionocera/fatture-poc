@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="data:,">
+<title>Fattura</title>
+<link rel="stylesheet" href="/static/stile.css">
+<style>
+  html, body { height: auto; overflow: auto; }
+  body { padding: 40px 24px 80px; }
+  .foglio { max-width: 1180px; margin: 0 auto; background: var(--carta); border: 2px solid var(--inchiostro); padding: 44px 52px 40px; }
+  .testa { display: flex; justify-content: space-between; align-items: flex-start; gap: 32px; }
+  .testa h1 { font-size: 54px; font-weight: 700; letter-spacing: -0.04em; line-height: 1.05; margin-top: 10px; }
+  .estremi { text-align: right; white-space: nowrap; }
+  .estremi .numero { font-size: 34px; font-weight: 700; letter-spacing: -0.02em; margin-top: 10px; }
+  .estremi .del { font-size: 22px; color: var(--grigio); }
+  .avviso { margin-top: 24px; padding: 14px 18px; background: var(--accento-tenue); border-left: 6px solid var(--accento); font-size: 22px; }
+  .avviso a { color: inherit; text-decoration-color: var(--accento); text-decoration-thickness: 2px; text-underline-offset: 4px; }
+  .parti { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; margin-top: 32px; padding-top: 22px; border-top: 2px solid var(--inchiostro); }
+  .parte .nome { font-size: 26px; font-weight: 650; margin-top: 8px; }
+  .parte p { font-size: 20px; color: var(--grigio); }
+  table { width: 100%; border-collapse: collapse; margin-top: 34px; font-size: 21px; }
+  th { font-family: var(--mono); font-weight: 500; font-size: 20px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--grigio); text-align: left; padding: 8px 14px 8px 0; border-bottom: 2px solid var(--inchiostro); }
+  td { padding: 11px 14px 11px 0; border-bottom: 1px solid var(--linea); vertical-align: top; }
+  th.num, td.num { text-align: right; padding-right: 0; padding-left: 14px; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  td.importo { font-weight: 650; }
+  .fondo { display: grid; grid-template-columns: 1fr 440px; gap: 48px; margin-top: 30px; align-items: start; }
+  .somme > div { display: flex; justify-content: space-between; gap: 16px; padding: 8px 0; border-bottom: 1px solid var(--linea); font-variant-numeric: tabular-nums; }
+  .somme .totale { border-bottom: 0; border-top: 2px solid var(--inchiostro); margin-top: 6px; padding-top: 14px; font-size: 38px; font-weight: 700; letter-spacing: -0.03em; align-items: baseline; }
+  .somme .totale span:first-child { font-family: var(--mono); font-size: 20px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; }
+  .pagamento p { font-size: 22px; margin-top: 8px; }
+  .pagamento p small { font-size: 20px; color: var(--grigio); }
+  details.tecnici { margin-top: 40px; padding-top: 16px; border-top: 1px solid var(--linea); }
+  details.tecnici pre { max-height: 520px; overflow: auto; font-size: 18px; }
+  .piede { max-width: 1180px; margin: 18px auto 0; font-family: var(--mono); font-size: 20px; color: var(--grigio); display: flex; justify-content: space-between; gap: 16px; }
+  @media (max-width: 800px) { .testa, .parti, .fondo { display: block; } .estremi { text-align: left; margin-top: 16px; } .foglio { padding: 24px 18px; } }
+</style>
+</head>
+<body>
+<article class="foglio" id="foglio" hidden></article>
+<div class="piede"><span id="nome-file"></span><span>Chiudi questa scheda per tornare alla conversazione</span></div>
+<script>
+(async function () {
+  const MODALITA = { MP01: "contanti", MP05: "bonifico", MP08: "carta di pagamento", MP12: "ricevuta bancaria", MP19: "addebito diretto sul conto" };
+  const crea = (tag, classe, testo) => { const e = document.createElement(tag); if (classe) e.className = classe; if (testo != null) e.textContent = testo; return e; };
+  const numero = (v, d = 2) => { const [i, dec] = Math.abs(v).toFixed(d).split("."); return (v < 0 ? "-" : "") + i.replace(/\B(?=(\d{3})+(?!\d))/g, ".") + (dec ? "," + dec : ""); };
+  const euro = v => numero(v) + " €";
+  const prezzo = v => numero(v, Math.abs(Math.round(v * 100) / 100 - v) < 1e-9 ? 2 : 3) + " €";
+  const quantita = v => numero(v, Number.isInteger(v) ? 0 : 2);
+  const giorno = iso => iso ? `${iso.slice(8, 10)}/${iso.slice(5, 7)}/${iso.slice(0, 4)}` : "";
+  const foglio = document.getElementById("foglio");
+  const nome = decodeURIComponent(location.pathname.split("/").pop());
+  document.getElementById("nome-file").textContent = nome;
+
+  const r = await fetch("/api/fattura/" + encodeURIComponent(nome));
+  const f = await r.json();
+  foglio.hidden = false;
+  if (!r.ok) { foglio.append(crea("div", "etichetta", "[ Fattura ]"), crea("p", "avviso", f.errore || "Fattura non trovata.")); return; }
+  if (f.tema.accento) document.documentElement.style.setProperty("--accento", f.tema.accento);
+  const notaDiCredito = f.tipo === "TD04";
+  document.title = `${notaDiCredito ? "Nota di credito" : "Fattura"} ${f.numero} · ${f.fornitore.nome}`;
+
+  const testa = crea("div", "testa"), chi = crea("div"), estremi = crea("div", "estremi");
+  chi.append(crea("div", "etichetta", notaDiCredito ? "[ Nota di credito ]" : "[ Fattura ricevuta ]"), crea("h1", "", f.fornitore.nome));
+  estremi.append(crea("div", "etichetta scura", "Numero"), crea("div", "numero", f.numero), crea("div", "del", "del " + giorno(f.data)));
+  testa.append(chi, estremi);
+  foglio.append(testa);
+
+  if (f.doppione || f.gemella) {
+    const avviso = crea("p", "avviso", f.doppione ? "Questa fattura è arrivata due volte: questo file è la copia. " : "Questa fattura è arrivata due volte: c'è un secondo file identico. ");
+    if (f.gemella) { const altra = crea("a", "", f.doppione ? "Apri l'originale" : "Apri la copia"); altra.href = "/fattura/" + encodeURIComponent(f.gemella); avviso.append(altra); }
+    foglio.append(avviso);
+  }
+  if (notaDiCredito) foglio.append(crea("p", "avviso", "È una nota di credito: riduce la spesa. Nei conti dell'applicazione i suoi importi hanno il segno meno."));
+
+  const parti = crea("div", "parti");
+  for (const [titolo, s] of [["Da", f.fornitore], ["A", f.cliente]]) {
+    const parte = crea("div", "parte");
+    parte.append(crea("div", "etichetta scura", titolo), crea("div", "nome", s.nome),
+      crea("p", "", [s.indirizzo, [s.cap, s.comune, s.provincia ? `(${s.provincia})` : ""].filter(Boolean).join(" ")].filter(Boolean).join(" · ")),
+      crea("p", "", "Partita IVA " + (s.partita_iva || "–")));
+    parti.append(parte);
+  }
+  foglio.append(parti);
+  if (f.categoria) parti.firstChild.append(crea("p", "", "Voce di spesa: " + f.categoria));
+  if (f.causale) foglio.append(crea("p", "avviso", f.causale));
+
+  const tabella = crea("table"), thead = crea("thead"), tr = crea("tr"), tbody = crea("tbody");
+  for (const [t, c] of [["Descrizione", ""], ["Quantità", "num"], ["Prezzo", "num"], ["IVA", "num"], ["Importo", "num"]]) tr.append(crea("th", c, t));
+  thead.append(tr);
+  for (const riga of f.righe) {
+    const x = crea("tr");
+    x.append(crea("td", "", riga.descrizione),
+      crea("td", "num", riga.quantita != null ? quantita(riga.quantita) + (riga.unita ? " " + riga.unita : "") : ""),
+      crea("td", "num", riga.prezzo != null ? prezzo(riga.prezzo) : ""),
+      crea("td", "num", riga.aliquota ? numero(riga.aliquota, 0) + "%" : "esente"),
+      crea("td", "num importo", riga.importo != null ? euro(riga.importo) : ""));
+    tbody.append(x);
+  }
+  tabella.append(thead, tbody);
+  foglio.append(tabella);
+
+  const fondo = crea("div", "fondo"), pagamento = crea("div", "pagamento"), somme = crea("div", "somme");
+  if (f.pagamento) {
+    pagamento.append(crea("div", "etichetta scura", "Pagamento"));
+    const p = crea("p", "", `Scadenza ${giorno(f.pagamento.scadenza)}`);
+    const giorni = Math.round((new Date(f.pagamento.scadenza) - new Date(f.data)) / 86400000);
+    p.append(document.createElement("br"), crea("small", "", (giorni <= 0 ? "alla data della fattura" : `a ${giorni} giorni dalla data della fattura`) + (MODALITA[f.pagamento.modalita] ? ", con " + MODALITA[f.pagamento.modalita] : "")));
+    pagamento.append(p);
+  }
+  const riga = (a, b, classe) => { const d = crea("div", classe); d.append(crea("span", "", a), crea("span", "", b)); return d; };
+  const imponibile = f.riepiloghi.reduce((s, x) => s + (x.imponibile || 0), 0), imposta = f.riepiloghi.reduce((s, x) => s + (x.imposta || 0), 0);
+  somme.append(riga("Importo senza IVA", euro(imponibile)));
+  for (const x of f.riepiloghi) somme.append(riga(x.aliquota ? `IVA ${numero(x.aliquota, 0)}% su ${euro(x.imponibile)}` : `Esente da IVA: ${euro(x.imponibile)}`, euro(x.imposta || 0)));
+  somme.append(riga("Totale", euro(f.totale ?? imponibile + imposta), "totale"));
+  fondo.append(pagamento, somme);
+  foglio.append(fondo);
+
+  const tecnici = crea("details", "tecnici");
+  tecnici.append(crea("summary", "", "Il file originale"), crea("pre", "", f.xml.replace(/></g, ">\n<")));
+  foglio.append(tecnici);
+})();
+</script>
+</body>
+</html>

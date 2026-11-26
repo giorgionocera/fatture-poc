@@ -49,3 +49,16 @@ def test_doppione_marcato_non_cancellato(db):
     assert db.execute("SELECT COUNT(*) FROM fatture").fetchone()[0] == 196
     assert db.execute("SELECT COUNT(*) FROM righe").fetchone()[0] == 504
     assert db.execute("SELECT file FROM fatture WHERE doppione = 1").fetchall() == [("IT09999000117_00002.xml",)]
+
+
+def test_lettura_di_una_fattura():
+    from pathlib import Path
+    from app import caricamento
+    cartella = Path(__file__).resolve().parent.parent / "contesto" / "dati" / "fatture"
+    f = caricamento.leggi_fattura(cartella / "IT09999000102_00007.xml")
+    assert (f["tipo"], f["numero"], f["data"], f["totale"]) == ("TD01", "221", "2026-05-03", 509.96)
+    assert f["fornitore"]["nome"] == "Nail Point Italia S.r.l." and f["cliente"]["comune"] == "Latina"
+    assert len(f["righe"]) == 10 and f["righe"][0] == {
+        "descrizione": "Smalto semipermanente 10 ml – Nude Rosa", "quantita": 11.0, "unita": "pz", "prezzo": 6.9, "importo": 75.9, "aliquota": 22.0}
+    assert f["riepiloghi"] == [{"aliquota": 22.0, "natura": None, "imponibile": 418.0, "imposta": 91.96}]
+    assert f["pagamento"] == {"modalita": "MP05", "scadenza": "2026-05-03", "importo": 509.96}

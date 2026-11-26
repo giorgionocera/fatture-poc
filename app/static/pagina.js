@@ -46,14 +46,46 @@
     $("#fornitori").textContent = n.fornitori;
     const elenco = $("#elenco");
     elenco.replaceChildren(...stato.fatture.map(f => {
-      const riga = crea("div", "fattura");
+      const riga = crea("a", "fattura");   // un clic apre la fattura in un'altra scheda, in forma leggibile
+      riga.href = "/fattura/" + encodeURIComponent(f.file);
+      riga.target = "_blank";
       riga.dataset.file = f.file;
+      riga.dataset.cerca = semplice(`${f.fornitore} ${f.numero}`);
+      riga.dataset.doppione = f.doppione ? 1 : 0;
+      riga.dataset.importo = f.doppione ? 0 : f.imponibile;   // la fattura doppia non entra nella somma, come nelle risposte
+      riga.title = `Apri la fattura ${f.numero}`;
       riga.append(crea("span", "giorno", giorno(f.data)), crea("span", "chi", breve(f.fornitore)), crea("span", "quanto", euro(f.imponibile)));
       return riga;
     }));
+    filtra();
     const intero = v => Math.round(v).toString();
     return animato ? conta($("#conta-file"), 0, n.file, intero, 1500) : ($("#conta-file").textContent = n.file);
   }
+
+  // Ricerca per fornitore (o numero di fattura): filtra l'elenco e mostra quante fatture e quanto valgono,
+  // per confrontarle con le cifre delle risposte. Senza maiuscole né accenti.
+  const semplice = t => (t || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+  function filtra() {
+    const parole = semplice($("#cerca").value).split(/\s+/).filter(Boolean);
+    let quante = 0, somma = 0, doppie = 0;
+    for (const riga of document.querySelectorAll("#elenco .fattura")) {
+      const dentro = parole.every(p => riga.dataset.cerca.includes(p));
+      riga.hidden = !dentro;
+      if (dentro) { quante++; somma += +riga.dataset.importo; doppie += +riga.dataset.doppione; }
+    }
+    $("#cerca-svuota").hidden = !parole.length;
+    const esito = $("#cerca-esito");
+    esito.hidden = !parole.length;
+    if (parole.length) {
+      esito.replaceChildren(
+        crea("span", "quante", (quante === 0 ? "nessuna fattura" : quante === 1 ? "1 fattura" : `${quante} fatture`) + (doppie ? " · 1 doppia" : "")),
+        crea("span", "somma", quante ? euro(Math.round(somma * 100) / 100) : ""));
+      $("#elenco").scrollTop = 0;
+    }
+  }
+  $("#cerca").addEventListener("input", filtra);
+  $("#cerca").addEventListener("keydown", e => { if (e.key === "Escape") { $("#cerca").value = ""; filtra(); } });
+  $("#cerca-svuota").addEventListener("click", () => { $("#cerca").value = ""; filtra(); $("#cerca").focus(); });
 
   function segnaDoppie(file) {
     for (const nome of file || []) {
@@ -91,7 +123,13 @@
     const corpo = crea("tbody");
     for (const f of fatture) {
       const r = crea("tr");
-      r.append(crea("td", "", breve(f.fornitore)), crea("td", "", f.numero), crea("td", "", giornoLungo(f.data)), crea("td", "num", euro(f.importo)));
+      const numero = crea("td");
+      if (f.file) {
+        const apri = crea("a", "apri-fattura", f.numero);
+        apri.href = "/fattura/" + encodeURIComponent(f.file); apri.target = "_blank"; apri.title = "Apri la fattura";
+        numero.append(apri);
+      } else numero.textContent = f.numero;
+      r.append(crea("td", "", breve(f.fornitore)), numero, crea("td", "", giornoLungo(f.data)), crea("td", "num", euro(f.importo)));
       corpo.append(r);
     }
     t.append(thead, corpo); scatola.append(t);
@@ -227,6 +265,7 @@
     try {
       $("#benvenuto").hidden = true;
       $("#conversazione").replaceChildren();
+      $("#cerca").value = "";
       $("#voci").replaceChildren(); $("#futuro").hidden = true;
       trovato = 0; $("#trovato-cifra").textContent = euro(0);
       $("#caselle").hidden = false; $("#caselle").classList.remove("compatte");
@@ -361,7 +400,7 @@
 
   // ── Tastiera: Opzione+R attiva il replay della prima analisi ──
   addEventListener("keydown", e => {
-    if (avanti && !e.altKey && !e.metaKey && (e.key === "ArrowRight" || ((e.key === " " || e.key === "Enter") && !$("#domanda").value))) {
+    if (avanti && !e.altKey && !e.metaKey && document.activeElement !== $("#cerca") && (e.key === "ArrowRight" || ((e.key === " " || e.key === "Enter") && !$("#domanda").value))) {
       e.preventDefault();
       return avanti();
     }

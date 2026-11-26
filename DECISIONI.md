@@ -51,6 +51,8 @@ Scelte non coperte dalla specifica, prese con il criterio "la più semplice e la
 - **Una scheda alla volta in vista**: la conversazione scorre e porta in vista l'ultima scheda; le precedenti si rivedono scorrendo.
 - **Importi formattati a mano**: il formato italiano del browser non mette il punto nei numeri di quattro cifre (2733,66).
 - **Stato su file** (`lavoro/stato.json`): se si ricarica la pagina a metà demo si ritrova tutto. Dopo `./demo reset` la pagina aperta si ricarica da sola.
+- **Ricerca nelle fatture** (zona di sinistra), chiesta da chi presenta per confrontare l'elenco con le risposte: filtra per fornitore o numero di fattura, senza badare a maiuscole e accenti, e mostra quante fatture restano e la loro somma senza IVA. La fattura doppia si vede nell'elenco ma non entra nella somma, come nelle risposte dell'agente. Esc o la × svuotano la ricerca.
+- **Lettore della fattura**, chiesto da chi presenta: un clic su una fattura dell'elenco di sinistra, o sul suo numero in "Come l'ho calcolato", la apre in un'altra scheda (`/fattura/<file>`) impaginata come un documento: fornitore, cliente, righe, IVA, totale, scadenza. Gli importi sono quelli scritti nel file, senza cambi di segno; su una nota di credito un avviso spiega che nei conti vale col meno. La fattura doppia ha un avviso con il collegamento all'altro file. Il testo XML sta in fondo, sotto "Il file originale", chiuso.
 - **Il reset non cancella il registro.**
 
 ## Replay

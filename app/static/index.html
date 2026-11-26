@@ -29,6 +29,11 @@
           <div><dt>Periodo</dt><dd id="periodo">–</dd></div>
           <div><dt>Fornitori</dt><dd id="fornitori">–</dd></div>
         </dl>
+        <div class="cerca">
+          <input id="cerca" type="search" placeholder="Cerca un fornitore" aria-label="Cerca un fornitore tra le fatture" autocomplete="off" spellcheck="false">
+          <button type="button" id="cerca-svuota" aria-label="Togli la ricerca" hidden>×</button>
+        </div>
+        <div class="cerca-esito" id="cerca-esito" hidden></div>
         <div class="elenco" id="elenco"></div>
       </div>
     </section>

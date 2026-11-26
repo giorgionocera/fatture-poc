@@ -75,6 +75,7 @@ class Agente:
         messaggi = [{"role": "system", "content": self._prompt}, *(storia or []), {"role": "user", "content": domanda}]
         risultati, interrogazioni, passi_detti = [], [], []
         grafico, ultima, usata_analisi = None, None, False
+        eseguite = []   # tutte le interrogazioni riuscite, con il loro risultato
         errori_sql, riscritta = 0, False
         self._log("domanda", testo=domanda, modello=self.modello.nome)
 
@@ -86,8 +87,13 @@ class Agente:
                  "interrogazioni": interrogazioni, "secondi": round(time.monotonic() - inizio, 1), **extra}
             if esito in ("ok", "solo_dati"):
                 fatture = None
-                if ultima:
-                    fatture = provenienza.fatture_coinvolte(self.dati, ultima["sql"])
+                # la provenienza viene dall'interrogazione che contiene la cifra principale, non per forza dall'ultima:
+                # "quanto spendo di caffè" guarda le capsule (552 €) e poi, per scrupolo, tutto il fornitore (827,50 €)
+                scelta = ultima
+                if cifra and eseguite:
+                    scelta = next((e for e in reversed(eseguite) if not cifre.non_verificate(cifra, [e["risultato"]])), ultima)
+                if scelta:
+                    fatture = provenienza.fatture_coinvolte(self.dati, scelta["sql"])
                 elif usata_analisi:
                     fatture = provenienza.da_analisi(pulito, self.analisi())
                 if fatture is not None:
@@ -127,6 +133,7 @@ class Agente:
                             sql = argomenti.get("sql", "")
                             esito = await asyncio.to_thread(self.dati.interroga, sql, self.imp.get("righe_massime", 200))
                             ultima = {"sql": sql, "risultato": esito}
+                            eseguite.append(ultima)
                             interrogazioni.append(sql)
                             risultati.append(esito)
                         elif nome == "mostra_grafico":

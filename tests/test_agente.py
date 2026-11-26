@@ -124,3 +124,15 @@ def test_cifra_principale():
     assert cifra_principale("Hai comprato **314 boccette** per 2.166,60 €.") == ("314 boccette", "Hai comprato 314 boccette per 2.166,60 €.")
     assert cifra_principale("Hai speso 950,00 € in due corsi.")[0] == "950,00 €"
     assert cifra_principale("Il fatturato non c'è.") == (None, "Il fatturato non c'è.")
+
+
+async def test_provenienza_dall_interrogazione_della_cifra_principale(agente):
+    """Se l'agente guarda prima le capsule e poi tutto il fornitore, le fatture mostrate sono quelle delle capsule."""
+    capsule = "SELECT ROUND(SUM(importo), 2) AS spesa FROM righe_valide WHERE articolo LIKE 'Capsule%'"
+    fornitore = "SELECT ROUND(SUM(imponibile), 2) AS spesa FROM fatture_valide WHERE fornitore LIKE 'Caffè%'"
+    a = agente(chiama("interroga", sql=capsule, cosa_cerco="le capsule di caffè"),
+               chiama("interroga", sql=fornitore, cosa_cerco="tutto il fornitore del caffè"),
+               dice("Per il caffè spendi **552,00 €**; dallo stesso fornitore compri in tutto 827,50 €."))
+    s = await a.rispondi("Quanto spendo di caffè?")
+    assert s["esito"] == "ok" and s["cifra"] == "552,00 €"
+    assert s["come"]["totale"] == 552.00

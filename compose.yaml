@@ -5,7 +5,8 @@ services:
     image: demo-fatture
     init: true
     ports:
-      - "127.0.0.1:8002:8002"   # raggiungibile solo da questo computer
+      # Di norma raggiungibile solo da questo computer. "./demo avvia --rete" la apre alla rete locale (ASCOLTO=0.0.0.0).
+      - "${ASCOLTO:-127.0.0.1}:8002:8002"
     env_file:
       - path: .env              # CHIAVE_FRONTIERA=...
         required: false

@@ -12,13 +12,49 @@ attendi() {
   echo "L'applicazione non risponde. Guarda: ./demo diario"; return 1
 }
 
+# L'indirizzo di questo computer sulla rete locale (Wi-Fi o cavo).
+indirizzo_di_rete() {
+  local ip
+  for scheda in en0 en1 en2 en3; do
+    ip=$(ipconfig getifaddr "$scheda" 2>/dev/null) && [ -n "$ip" ] && { echo "$ip"; return 0; }
+  done
+  return 1
+}
+
+# Se l'app è già accesa e aperta alla rete, un riavvio la lascia aperta.
+aperta_alla_rete() { docker compose port app 8002 2>/dev/null | grep -q '^0\.0\.0\.0:'; }
+
+avviso_rete() {
+  local ip
+  if ip=$(indirizzo_di_rete); then
+    echo "Aperta alla rete locale: dagli altri computer apri http://$ip:8002"
+  else
+    echo "Aperta alla rete locale, ma questo computer non risulta collegato a nessuna rete."
+  fi
+  echo "Attenzione: chiunque sia su questa rete può usarla, fare domande e fare il reset. Per richiuderla: ./demo avvia"
+}
+
 case "${1:-}" in
   avvia)
+    rete=no; browser=si
+    for opzione in "${@:2}"; do
+      case "$opzione" in
+        --rete) rete=si ;;
+        --senza-browser) browser=no ;;
+        *) echo "Opzione sconosciuta: $opzione (valgono --rete e --senza-browser)"; exit 1 ;;
+      esac
+    done
     [ -f .env ] || echo "Attenzione: manca il file .env con la chiave del modello (vedi .env.example)."
+    if [ "$rete" = si ]; then export ASCOLTO=0.0.0.0; else export ASCOLTO=127.0.0.1; fi
     docker compose up -d --build
-    attendi && echo "Pronta: $INDIRIZZO" && { [ "${2:-}" = "--senza-browser" ] || open "$INDIRIZZO"; } ;;
+    attendi && echo "Pronta: $INDIRIZZO"
+    [ "$rete" = si ] && avviso_rete
+    [ "$browser" = no ] || open "$INDIRIZZO" ;;
   ferma)    docker compose down ;;
-  riavvia)  docker compose up -d --force-recreate && attendi && echo "Riavviata: $INDIRIZZO" ;;
+  riavvia)
+    if aperta_alla_rete; then export ASCOLTO=0.0.0.0; fi
+    docker compose up -d --force-recreate && attendi && echo "Riavviata: $INDIRIZZO"
+    [ "${ASCOLTO:-}" = 0.0.0.0 ] && avviso_rete || true ;;
   reset)    curl -fsS -X POST "$INDIRIZZO/api/reset" >/dev/null && echo "Stato iniziale: nessuna fattura caricata." ;;
   test)     docker compose run --rm --no-deps app python -m pytest "${@:2}" ;;
   verifica) docker compose run --rm --no-deps app python -m app.cli verifica ;;
@@ -31,6 +67,7 @@ case "${1:-}" in
 Uso: ./demo <comando>
 
   avvia            costruisce e accende l'applicazione, poi apre $INDIRIZZO
+  avvia --rete     come sopra, ma raggiungibile anche dagli altri computer della stessa rete
   ferma            la spegne
   riavvia          la riaccende (dopo una modifica a config.toml o a .env)
   reset            riporta la pagina allo stato iniziale, senza fatture

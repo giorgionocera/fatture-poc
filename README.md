@@ -34,12 +34,29 @@ Modello, indirizzo e nome dell'impresa stanno in `config.toml`; la chiave sta in
 
 Se il modello non risponde durante la prima analisi, cifre e schede escono comunque: le calcola il codice, e le tre frasi di accompagnamento le scrive il codice al posto del modello.
 
+## Farla vedere su un altro computer
+
+Di norma l'app risponde solo da questo computer. Per aprirla agli altri computer della stessa rete:
+
+```
+./demo avvia --rete        # stampa l'indirizzo, per esempio http://192.168.1.20:8002
+./demo avvia               # la richiude
+```
+
+- **Non c'è nessuna protezione**: chiunque sia su quella rete può aprire la pagina, fare domande (che consumano la chiave del modello) e fare il reset. Va bene su una rete di casa o su un hotspot proprio, non sul Wi-Fi di una sala.
+- **La sessione è una sola**: i due computer vedono le stesse fatture e le stesse schede, ma una pagina non si aggiorna quando l'altra fa una domanda: va ricaricata.
+- **La cartella si trascina dal computer che ha la pagina aperta**, quindi deve trovarsi su quello. In alternativa si carica da questo Mac e sull'altro si ricarica la pagina.
+- Se l'altro computer non raggiunge la pagina, controllare il firewall di macOS (Impostazioni di Sistema, Rete, Firewall) e che i due siano sulla stessa rete.
+
+Se l'altro computer deve solo guardare, è più semplice duplicare lo schermo.
+
 ## Comandi
 
 | Comando | Cosa fa |
 | --- | --- |
 | `./demo avvia` | Costruisce, accende e apre la pagina |
-| `./demo ferma` / `riavvia` | Spegne / riaccende |
+| `./demo avvia --rete` | Come `avvia`, ma raggiungibile anche dagli altri computer della stessa rete; stampa l'indirizzo da aprire |
+| `./demo ferma` / `riavvia` | Spegne / riaccende (un riavvio lascia l'app aperta alla rete, se lo era) |
 | `./demo reset` | Stato iniziale, senza fatture (la pagina aperta si ricarica da sola) |
 | `./demo test` | Test automatici: caricamento, quattro regole, sola lettura, controllo delle cifre, agente |
 | `./demo verifica` | Numeri del caricamento e totale recuperabile |

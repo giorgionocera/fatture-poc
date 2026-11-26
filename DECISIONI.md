@@ -5,6 +5,7 @@ Scelte non coperte dalla specifica, prese con il criterio "la più semplice e la
 ## Struttura e avvio
 
 - **Docker**, su richiesta di chi presenta. L'app gira in un contenitore (Python 3.13); sul portatile serve solo Docker Desktop. La porta è pubblicata su `127.0.0.1:8002`: raggiungibile solo da questo computer, e diversa dalla 8000 della demo 1, così le due possono restare accese insieme.
+- **Apertura alla rete locale, spenta di norma** (chiesta da chi presenta): `./demo avvia --rete` pubblica la porta su tutte le interfacce (`ASCOLTO=0.0.0.0` in `compose.yaml`) e stampa l'indirizzo del Mac. `./demo avvia` la richiude; `./demo riavvia` conserva lo stato in cui era. Non c'è autenticazione: è pensata per una rete propria, non per quella della sala.
 - **L'immagine va costruita con la rete accesa** (`./demo avvia` la prima volta). Dopo, l'unica connessione è quella al modello.
 - **Python, FastAPI, `httpx`, `sqlglot`, SQLite.** Nessuna libreria del fornitore del modello: `app/modello.py` parla il protocollo compatibile OpenAI.
 - **Pagina senza framework e senza passaggi di compilazione**: un file HTML, uno CSS, due JavaScript. Caratteri Inter e JetBrains Mono inclusi in `app/static/fonts/` (licenza OFL), gli stessi della famiglia grafica dell'intervento.

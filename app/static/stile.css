@@ -137,6 +137,13 @@ details[open].come > summary::before, details[open].tecnici > summary::before { 
 .tabella-fatture th { position: sticky; top: 0; background: var(--carta); font-family: var(--mono); font-weight: 500; font-size: 20px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--grigio); text-align: left; padding: 6px 12px 6px 0; border-bottom: 1px solid var(--inchiostro); }
 .tabella-fatture td { padding: 6px 12px 6px 0; border-bottom: 1px solid var(--linea); white-space: nowrap; }
 .tabella-fatture td.num, .tabella-fatture th.num { text-align: right; padding-right: 4px; font-variant-numeric: tabular-nums; }
+.tabella-fatture.dettaglio td.cosa { white-space: normal; min-width: 220px; }
+.tabella-fatture.dettaglio td.cosa small { display: block; font-size: 20px; color: var(--grigio); }
+.tabella-fatture.dettaglio td.forte { font-weight: 650; }
+.tabella-fatture.dettaglio tr.zero td { color: var(--grigio); }
+.tabella-fatture.dettaglio tr.zero td.forte { font-weight: 400; }
+.tabella-fatture tfoot td { position: sticky; bottom: 0; background: var(--carta); border-top: 2px solid var(--inchiostro); border-bottom: 0; font-weight: 650; padding-top: 8px; }
+.tabella-fatture tfoot td:first-child { font-family: var(--mono); font-weight: 500; text-transform: uppercase; letter-spacing: 0.06em; }
 details.tecnici { margin-top: 12px; }
 details.tecnici > summary { color: var(--grigio); }
 details.tecnici > summary::before { border-color: var(--grigio); }

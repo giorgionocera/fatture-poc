@@ -11,10 +11,15 @@ PAROLE_FINE = ["ritiro", "fine noleggio", "disdetta", "cessazione"]
 r2 = lambda x: round(x + 0.0, 2)
 
 
-def _fattura(db, fattura_id, importo=None) -> dict:
+def _fattura(db, fattura_id, importo=None, **dettaglio) -> dict:
+    """Una fattura della provenienza. Con `dettaglio` diventa una riga che si può ricontrollare a mano:
+    voce, quantita, unita, prezzo e in_piu (quanto di quella riga entra nella cifra della scoperta)."""
     f = db.execute("SELECT fornitore, numero, data, imponibile, file FROM fatture WHERE id = ?", (fattura_id,)).fetchone()
-    return {"fornitore": f[0], "numero": f[1], "data": f[2],
+    riga = {"fornitore": f[0], "numero": f[1], "data": f[2],
             "importo": r2(f[3] if importo is None else importo), "file": f[4]}
+    if "in_piu" in dettaglio:
+        dettaglio["in_piu"] = r2(dettaglio["in_piu"])
+    return {**riga, **dettaglio}
 
 
 def doppioni(db) -> list[dict]:
@@ -27,7 +32,8 @@ def doppioni(db) -> list[dict]:
             (piva, numero, data)).fetchone()
         casi.append({"fornitore": fornitore, "numero": numero, "data": data, "imponibile": r2(imponibile),
                      "totale": r2(totale), "file_doppio": file, "file_originale": originale[1],
-                     "fatture": [_fattura(db, originale[0]), _fattura(db, fid)]})
+                     "fatture": [_fattura(db, originale[0], voce="Fattura originale", in_piu=0),
+                                 _fattura(db, fid, voce="La stessa fattura, arrivata una seconda volta", in_piu=imponibile)]})
     return casi
 
 
@@ -52,8 +58,11 @@ def aumenti(db, soglia=SOGLIA) -> list[dict]:
             "primo_mese_aumento": next(r[1] for r in righe if r[2] != p0),
             "maggior_costo": r2(sum(r[3] * (r[2] - p0) for r in righe)),
             "maggior_costo_annuo": r2(pezzi * (p1 - p0)),
+            "data_primo_prezzo": righe[0][0], "data_ultimo_prezzo": righe[-1][0],
             "serie": [{"mese": r[1], "prezzo": r[2]} for r in righe],
-            "fatture": [_fattura(db, r[5], r[3] * r[2]) for r in righe if r[2] != p0],
+            # tutte le righe, anche quelle al primo prezzo: servono a vedere da dove si parte
+            "fatture": [_fattura(db, r[5], r[3] * r[2], voce=articolo, quantita=r[3], unita=r[4], prezzo=r[2],
+                                 in_piu=r[3] * (r[2] - p0)) for r in righe],
         })
     return sorted(casi, key=lambda c: (c["fornitore"], -c["maggior_costo"]))
 
@@ -61,10 +70,10 @@ def aumenti(db, soglia=SOGLIA) -> list[dict]:
 def prezzi_diversi(db, soglia=SOGLIA) -> list[dict]:
     """Stesso articolo comprato da fornitori diversi, a prezzi che differiscono."""
     per_articolo = defaultdict(lambda: defaultdict(list))
-    for articolo, fornitore, prezzo, quantita, fid in db.execute(
-            "SELECT articolo, fornitore, prezzo_unitario, quantita, fattura_id FROM righe_valide "
+    for articolo, fornitore, prezzo, quantita, fid, unita, data in db.execute(
+            "SELECT articolo, fornitore, prezzo_unitario, quantita, fattura_id, unita, data FROM righe_valide "
             "WHERE unita IS NOT NULL AND unita <> '' AND quantita > 0 ORDER BY data, id"):
-        per_articolo[articolo][fornitore].append((prezzo, quantita, fid))
+        per_articolo[articolo][fornitore].append((prezzo, quantita, fid, unita, data))
     casi = []
     for articolo, fornitori in per_articolo.items():
         if len(fornitori) < 2:
@@ -84,7 +93,11 @@ def prezzi_diversi(db, soglia=SOGLIA) -> list[dict]:
                 "differenza_percento": round(100 * (alto / basso - 1), 1),
                 "pezzi_al_prezzo_alto": sum(r[1] for r in care),
                 "risparmio_possibile": r2(sum(r[1] * (r[0] - basso) for r in care)),
-                "fatture": [_fattura(db, r[2], r[0] * r[1]) for r in care],
+                # le righe del fornitore conveniente (in più: zero) e quelle pagate di più
+                "fatture": sorted(
+                    [_fattura(db, r[2], r[0] * r[1], voce=articolo, quantita=r[1], unita=r[3], prezzo=r[0],
+                              in_piu=max(0.0, r[1] * (r[0] - basso))) for r in fornitori[conveniente] + care],
+                    key=lambda f: (f["fornitore"] != conveniente, f["data"])),
             })
     return casi
 
@@ -106,7 +119,7 @@ def canoni_dopo_fine(db, parole=PAROLE_FINE) -> list[dict]:
             continue
         segni = ",".join("?" for _ in articoli)
         dopo = db.execute(
-            f"SELECT mese, data, importo, fattura_id, articolo FROM righe_valide WHERE fornitore = ? AND data > ? "
+            f"SELECT mese, data, importo, fattura_id, articolo, quantita, unita, prezzo_unitario FROM righe_valide WHERE fornitore = ? AND data > ? "
             f"AND articolo IN ({segni}) ORDER BY data", (fornitore, data_fine, *articoli)).fetchall()
         if not dopo:
             continue
@@ -114,7 +127,8 @@ def canoni_dopo_fine(db, parole=PAROLE_FINE) -> list[dict]:
             "fornitore": fornitore, "data_fine": data_fine, "riga_di_fine": descrizione,
             "articolo": dopo[0][4], "canoni_dopo_la_fine": len(dopo), "mesi": [d[0] for d in dopo],
             "canone": r2(dopo[0][2]), "importo_non_dovuto": r2(sum(d[2] for d in dopo)),
-            "fatture": [_fattura(db, fid, 0)] + [_fattura(db, d[3], d[2]) for d in dopo],
+            "fatture": [_fattura(db, fid, 0, voce=descrizione, in_piu=0)]
+                       + [_fattura(db, d[3], d[2], voce=d[4], quantita=d[5], unita=d[6], prezzo=d[7], in_piu=d[2]) for d in dopo],
         })
     return casi
 

@@ -136,6 +136,37 @@
     return scatola;
   }
 
+  // Per le scoperte: una riga per articolo e fattura, con quanto entra nella cifra della scheda.
+  // Le righe a zero (primo prezzo, fattura originale, ritiro) restano, più chiare: mostrano da dove si parte.
+  function tabellaDettaglio(righe, colonna, totale) {
+    const scatola = crea("div", "tabella-fatture dettaglio"), t = crea("table"), testa = crea("tr");
+    const piuFornitori = new Set(righe.map(r => r.fornitore)).size > 1;
+    for (const [nome, cls] of [["Data", ""], ["Fattura", ""], ["Voce", ""], ["Pezzi", "num"], ["Prezzo", "num"], [colonna, "num"]]) testa.append(crea("th", cls, nome));
+    const thead = crea("thead"); thead.append(testa);
+    const corpo = crea("tbody");
+    const prezzoTesto = v => formatoNumero(v, Math.abs(Math.round(v * 100) / 100 - v) < 1e-9 ? 2 : 3) + " €";
+    for (const f of righe) {
+      const r = crea("tr", f.in_piu ? "" : "zero");
+      const numero = crea("td");
+      const apri = crea("a", "apri-fattura", f.numero);
+      apri.href = "/fattura/" + encodeURIComponent(f.file); apri.target = "_blank"; apri.title = "Apri la fattura";
+      numero.append(apri);
+      const voce = crea("td", "cosa", f.voce || "");
+      if (piuFornitori) voce.append(crea("small", "", breve(f.fornitore)));
+      r.append(crea("td", "", giornoLungo(f.data)), numero, voce,
+        crea("td", "num", f.quantita != null ? formatoNumero(f.quantita) + (f.unita ? " " + f.unita : "") : ""),
+        crea("td", "num", f.prezzo != null ? prezzoTesto(f.prezzo) : ""),
+        crea("td", "num forte", euro(f.in_piu || 0)));
+      corpo.append(r);
+    }
+    const piede = crea("tfoot"), somma = crea("tr");
+    const etichetta = crea("td", "", "Totale"); etichetta.colSpan = 5;
+    somma.append(etichetta, crea("td", "num forte", euro(totale)));
+    piede.append(somma);
+    t.append(thead, corpo, piede); scatola.append(t);
+    return scatola;
+  }
+
   function tabellaDati(tabella) {
     const scatola = crea("div", "tabella-fatture"), t = crea("table"), testa = crea("tr");
     for (const c of tabella.colonne) testa.append(crea("th", "", c.replaceAll("_", " ")));
@@ -150,23 +181,29 @@
     return scatola;
   }
 
-  function comeCalcolato(testo, fatture, interrogazioni) {
+  function comeCalcolato(testo, fatture, interrogazioni, come) {
     const d = crea("details", "come"), s = crea("summary", "", "Come l'ho calcolato");
     d.append(s);
     let frase = testo || "";
     if (fatture && fatture.length) {
-      const tutte = stato.statistiche && fatture.length >= stato.statistiche.fatture_valide;
-      frase += (frase ? " " : "") + (tutte ? `Ho letto tutte le ${fatture.length} fatture.` : fatture.length === 1 ? "Viene da questa fattura:" : `Viene da queste ${fatture.length} fatture:`);
+      const quante = new Set(fatture.map(f => f.file || f.numero)).size;   // una fattura può avere più righe
+      const tutte = stato.statistiche && quante >= stato.statistiche.fatture_valide;
+      frase += (frase ? " " : "") + (tutte ? `Ho letto tutte le ${quante} fatture.` : quante === 1 ? "Viene da questa fattura:" : `Viene da queste ${quante} fatture:`);
     }
     if (frase) d.append(crea("p", "come-testo", frase));
-    if (fatture && fatture.length) d.append(tabellaFatture(fatture));
+    if (fatture && fatture.length) d.append(come && come.colonna ? tabellaDettaglio(fatture, come.colonna, come.totale) : tabellaFatture(fatture));
     if (interrogazioni && interrogazioni.length) {
       const tecnici = crea("details", "tecnici");
       tecnici.append(crea("summary", "", "Dettagli tecnici"));
       for (const q of interrogazioni) tecnici.append(crea("pre", "", q));
       d.append(tecnici);
     }
-    d.addEventListener("toggle", () => inVista(d.closest(".scheda")));
+    // aperto: la conversazione scorre fino a "Come l'ho calcolato", così la tabella si vede subito
+    d.addEventListener("toggle", () => {
+      const c = $("#conversazione");
+      if (!d.open) return inVista(d.closest(".scheda"));
+      requestAnimationFrame(() => c.scrollTo({ top: Math.max(0, d.offsetTop - c.offsetTop - 16), behavior: "smooth" }));
+    });
     return d;
   }
 
@@ -188,7 +225,7 @@
       }
       a.append(voci);
     }
-    a.append(comeCalcolato(s.come.testo, s.come.fatture, null));
+    a.append(comeCalcolato(s.come.testo, s.come.fatture, null, s.come));
     return a;
   }
 

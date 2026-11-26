@@ -30,6 +30,8 @@ Scelte non coperte dalla specifica, prese con il criterio "la più semplice e la
 - **Le scoperte avanzano quando lo decide chi presenta** (freccia destra, spazio o invio a campo vuoto, o clic). La specifica non dice come; a tempo fisso la scheda scorreva via prima che si finisse di leggerla. Con `[pagina] secondi_tra_scoperte` maggiore di zero si torna all'avanzamento automatico.
 - **Scheda "Cosa non torna"**: la cifra grande è la somma delle tre voci (2.479,00 €); il totale di 2.733,66 € sta solo a destra, sul verde lime.
 - **La fattura doppia viene segnata** nell'elenco di sinistra quando compare la terza scoperta.
+- **"Come l'ho calcolato" delle scoperte 02 e 03 si ricontrolla a mano**: una riga per articolo e fattura, con pezzi, prezzo e quanto entra nella cifra ("Pagato in più", "Da recuperare"), e il totale in fondo, uguale alla cifra della scheda. Ci sono anche le righe che valgono zero (il primo prezzo dell'anno, la fattura originale, il ritiro del macchinario, il gel al prezzo più basso): senza, non si vedeva da dove partiva il confronto. Nella prima versione la tabella elencava solo le fatture dopo il primo ritocco, con la spesa della riga invece di quanto pagato in più, e chi presenta non trovava il 9,80 € di partenza della cera.
+- **La nota di ogni aumento dice anche quando**: "da 9,80 € a novembre 2025 a 11,27 € a ottobre 2026, in 7 ritocchi".
 
 ## Domande libere
 

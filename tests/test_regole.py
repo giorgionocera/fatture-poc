@@ -71,3 +71,20 @@ def test_panoramica(db, attese):
     assert p["categorie"] == attese["spesa_per_categoria"]
     assert p["mese_piu_caro"] == attese["mese_piu_caro"]
     assert p["mese_meno_caro"] == attese["mese_meno_caro"]
+
+
+def test_provenienza_delle_scoperte_si_ricontrolla_a_mano(db):
+    """La colonna "in più" delle tabelle di "Come l'ho calcolato" somma alla cifra della scheda,
+    e le righe al primo prezzo ci sono: si vede da dove si parte."""
+    from app.analisi import componi, frasi_del_codice
+    a = regole.analisi(db, IMPOSTAZIONI)
+    _, prezzi, non_torna = componi(a, frasi_del_codice(a))["scoperte"]
+    assert round(sum(f["in_piu"] for f in prezzi["come"]["fatture"]), 2) == prezzi["come"]["totale"] == 254.66
+    assert round(sum(f["in_piu"] for f in non_torna["come"]["fatture"]), 2) == non_torna["come"]["totale"] == 2479.00
+    cera = [f for f in prezzi["come"]["fatture"] if f["voce"].startswith("Cera")]
+    assert len(cera) == 12
+    assert [(f["data"], f["prezzo"], f["in_piu"]) for f in cera[:3]] == [
+        ("2025-11-05", 9.8, 0.0), ("2025-12-05", 9.8, 0.0), ("2026-01-11", 9.95, 3.3)]
+    gel = [f for f in non_torna["come"]["fatture"] if f["voce"].startswith("Gel")]
+    assert {f["prezzo"] for f in gel if f["in_piu"] == 0} == {24.0}
+    assert round(sum(f["in_piu"] for f in gel), 2) == 107.50

@@ -11,7 +11,7 @@ from datetime import datetime
 
 from . import cifre
 from .config import REGISTRAZIONI
-from .formato import del_giorno, euro, il_giorno, intero, mese, nome_breve, percento, prezzo
+from .formato import data, del_giorno, euro, il_giorno, intero, mese, nome_breve, percento, prezzo
 from .modello import ErroreModello
 
 FILE_REPLAY = REGISTRAZIONI / "prima_analisi.json"
@@ -111,8 +111,12 @@ def componi(a: dict, frasi: dict) -> dict:
 
     voci_prezzi = []
     for x in a["aumenti"]:
-        nota = (f"{nome_breve(x['fornitore'])}: da {prezzo(x['prezzo_iniziale'])} a {prezzo(x['prezzo_finale'])}"
-                + (f" in {x['numero_ritocchi']} ritocchi" if x["numero_ritocchi"] > 1 else f" da {mese(x['primo_mese_aumento'])}"))
+        if x["numero_ritocchi"] > 1:
+            nota = (f"{nome_breve(x['fornitore'])}: da {prezzo(x['prezzo_iniziale'])} a {mese(x['data_primo_prezzo'])} "
+                    f"a {prezzo(x['prezzo_finale'])} a {mese(x['data_ultimo_prezzo'])}, in {x['numero_ritocchi']} ritocchi")
+        else:
+            nota = (f"{nome_breve(x['fornitore'])}: da {prezzo(x['prezzo_iniziale'])} a {prezzo(x['prezzo_finale'])} "
+                    f"da {mese(x['primo_mese_aumento'])}")
         if not x["nel_totale"]:
             nota += f" · {euro(x['maggior_costo'])} in più finora, fuori dal totale"
         voci_prezzi.append({"nome": x["articolo"], "valore": "+" + percento(x["aumento_percento"]), "nota": nota})
@@ -121,9 +125,13 @@ def componi(a: dict, frasi: dict) -> dict:
         "id": "prezzi", "numero": "02", "titolo": "Chi ha alzato i prezzi", "frase": frasi["prezzi"],
         "cifra": euro(pagato), "sotto_cifra": "già pagati in più rispetto ai prezzi di partenza",
         "grafico": None, "voci": voci_prezzi, "aggiunge": di("aumenti"),
-        "come": {"testo": "Per ogni articolo ho confrontato il primo prezzo dell'anno con quelli pagati dopo: "
-                          "quantità comprata per la differenza di prezzo, riga per riga.",
-                 "fatture": [f for x in a["aumenti"] if x["nel_totale"] for f in x["fatture"]]},
+        "come": {"testo": "Per ogni articolo parto dal primo prezzo dell'anno ("
+                          + "; ".join(f"{x['articolo'].split(' ')[0].lower()} {prezzo(x['prezzo_iniziale'])} il {data(x['data_primo_prezzo'])}"
+                                      for x in a["aumenti"] if x["nel_totale"])
+                          + "). Fattura per fattura, i pezzi comprati per quanto il prezzo era salito: "
+                            "la somma è quello che hai pagato in più.",
+                 "fatture": [f for x in a["aumenti"] if x["nel_totale"] for f in x["fatture"]],
+                 "colonna": "Pagato in più", "totale": pagato},
     }
 
     voci_torna = []
@@ -144,9 +152,10 @@ def componi(a: dict, frasi: dict) -> dict:
         "id": "non_torna", "numero": "03", "titolo": "Cosa non torna", "frase": frasi["non_torna"],
         "cifra": euro(round(sum(v["importo"] for v in aggiunge), 2)), "sotto_cifra": "da recuperare o risparmiare",
         "grafico": None, "voci": voci_torna, "aggiunge": aggiunge,
-        "come": {"testo": "Ho cercato file con stesso fornitore, numero, data e totale; canoni fatturati dopo una riga "
-                          "di ritiro; lo stesso articolo comprato da fornitori diversi a prezzi diversi.",
-                 "fatture": tutte("doppioni") + tutte("canoni_dopo_fine") + tutte("prezzi_diversi")},
+        "come": {"testo": "Fatture identiche, canoni dopo il ritiro, stesso articolo a prezzi diversi. "
+                          "Le righe a zero sono il confronto: l'originale, il ritiro, il prezzo più basso.",
+                 "fatture": tutte("doppioni") + tutte("canoni_dopo_fine") + tutte("prezzi_diversi"),
+                 "colonna": "Da recuperare", "totale": round(sum(v["importo"] for v in aggiunge), 2)},
     }
     return {
         "scoperte": [soldi, prezzi, non_torna],

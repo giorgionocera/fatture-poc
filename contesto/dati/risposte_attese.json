@@ -1,0 +1,753 @@
+{
+  "periodo": [
+    "2025-11-01",
+    "2026-10-28"
+  ],
+  "file_caricati": 196,
+  "fatture_valide": 195,
+  "fornitori": 19,
+  "spesa_totale_imponibile": 67808.52,
+  "iva_totale": 14143.37,
+  "totale_con_iva": 81951.89,
+  "spesa_per_categoria": [
+    {
+      "categoria": "Affitto",
+      "spesa": 16800.0,
+      "quota_percento": 24.8
+    },
+    {
+      "categoria": "Noleggio macchinari",
+      "spesa": 12344.0,
+      "quota_percento": 18.2
+    },
+    {
+      "categoria": "Prodotti per trattamenti",
+      "spesa": 5821.86,
+      "quota_percento": 8.6
+    },
+    {
+      "categoria": "Energia e acqua",
+      "spesa": 4798.36,
+      "quota_percento": 7.1
+    },
+    {
+      "categoria": "Software e incassi",
+      "spesa": 4432.0,
+      "quota_percento": 6.5
+    },
+    {
+      "categoria": "Prodotti per rivendita",
+      "spesa": 4164.7,
+      "quota_percento": 6.1
+    },
+    {
+      "categoria": "Unghie",
+      "spesa": 3886.9,
+      "quota_percento": 5.7
+    },
+    {
+      "categoria": "Consulenze",
+      "spesa": 2928.0,
+      "quota_percento": 4.3
+    },
+    {
+      "categoria": "Lavanderia",
+      "spesa": 2888.9,
+      "quota_percento": 4.3
+    },
+    {
+      "categoria": "Pulizie",
+      "spesa": 2640.0,
+      "quota_percento": 3.9
+    },
+    {
+      "categoria": "Monouso e consumabili",
+      "spesa": 2479.9,
+      "quota_percento": 3.7
+    },
+    {
+      "categoria": "Pubblicità",
+      "spesa": 2010.0,
+      "quota_percento": 3.0
+    },
+    {
+      "categoria": "Formazione",
+      "spesa": 950.0,
+      "quota_percento": 1.4
+    },
+    {
+      "categoria": "Accoglienza clienti",
+      "spesa": 827.5,
+      "quota_percento": 1.2
+    },
+    {
+      "categoria": "Telefonia e internet",
+      "spesa": 656.4,
+      "quota_percento": 1.0
+    },
+    {
+      "categoria": "Manutenzioni",
+      "spesa": 180.0,
+      "quota_percento": 0.3
+    }
+  ],
+  "spesa_per_fornitore": [
+    {
+      "fornitore": "Immobiliare Circeo S.r.l.",
+      "spesa": 16800.0,
+      "fatture": 12
+    },
+    {
+      "fornitore": "MedLaser Rent S.r.l.",
+      "spesa": 9144.0,
+      "fatture": 12
+    },
+    {
+      "fornitore": "Linea Pelle Distribuzione S.r.l.",
+      "spesa": 5821.86,
+      "fatture": 12
+    },
+    {
+      "fornitore": "Luce Pontina Energia S.p.A.",
+      "spesa": 4375.96,
+      "fatture": 12
+    },
+    {
+      "fornitore": "Dermovita Cosmetici S.p.A.",
+      "spesa": 4164.7,
+      "fatture": 8
+    },
+    {
+      "fornitore": "Nail Point Italia S.r.l.",
+      "spesa": 3886.9,
+      "fatture": 12
+    },
+    {
+      "fornitore": "PagoFacile S.p.A.",
+      "spesa": 3470.0,
+      "fatture": 12
+    },
+    {
+      "fornitore": "TecnoBeauty Noleggi S.r.l.",
+      "spesa": 3200.0,
+      "fatture": 12
+    },
+    {
+      "fornitore": "Centro Servizi Contabili Latina S.r.l.",
+      "spesa": 2928.0,
+      "fatture": 16
+    },
+    {
+      "fornitore": "Lavanderia Industriale Tirrena S.n.c.",
+      "spesa": 2888.9,
+      "fatture": 12
+    },
+    {
+      "fornitore": "Pulito Subito Soc. Coop.",
+      "spesa": 2640.0,
+      "fatture": 12
+    },
+    {
+      "fornitore": "Beauty Pro Forniture S.r.l.",
+      "spesa": 2479.9,
+      "fatture": 12
+    },
+    {
+      "fornitore": "Stampa e Web Latina S.r.l.",
+      "spesa": 2010.0,
+      "fatture": 12
+    },
+    {
+      "fornitore": "AgendaBella S.r.l.",
+      "spesa": 962.0,
+      "fatture": 12
+    },
+    {
+      "fornitore": "Accademia Estetica Avanzata S.r.l.",
+      "spesa": 950.0,
+      "fatture": 2
+    },
+    {
+      "fornitore": "Caffè Service Latina S.r.l.",
+      "spesa": 827.5,
+      "fatture": 6
+    },
+    {
+      "fornitore": "FibraTel S.p.A.",
+      "spesa": 656.4,
+      "fatture": 12
+    },
+    {
+      "fornitore": "Acquedotto Pontino S.p.A.",
+      "spesa": 422.4,
+      "fatture": 6
+    },
+    {
+      "fornitore": "ClimaService Pontino S.r.l.",
+      "spesa": 180.0,
+      "fatture": 1
+    }
+  ],
+  "spesa_per_mese": [
+    {
+      "mese": "2025-11",
+      "spesa": 6370.86
+    },
+    {
+      "mese": "2025-12",
+      "spesa": 6116.48
+    },
+    {
+      "mese": "2026-01",
+      "spesa": 4551.92
+    },
+    {
+      "mese": "2026-02",
+      "spesa": 5129.59
+    },
+    {
+      "mese": "2026-03",
+      "spesa": 5795.74
+    },
+    {
+      "mese": "2026-04",
+      "spesa": 5238.78
+    },
+    {
+      "mese": "2026-05",
+      "spesa": 6060.08
+    },
+    {
+      "mese": "2026-06",
+      "spesa": 5750.29
+    },
+    {
+      "mese": "2026-07",
+      "spesa": 6050.42
+    },
+    {
+      "mese": "2026-08",
+      "spesa": 5182.37
+    },
+    {
+      "mese": "2026-09",
+      "spesa": 6628.18
+    },
+    {
+      "mese": "2026-10",
+      "spesa": 4933.81
+    }
+  ],
+  "aumenti": {
+    "fornitore": "Linea Pelle Distribuzione S.r.l.",
+    "articoli": [
+      {
+        "articolo": "Cera depilatoria liposolubile barattolo 800 ml",
+        "prezzo_iniziale": 9.8,
+        "prezzo_finale": 11.27,
+        "aumento_percento": 15.0,
+        "numero_aumenti": 7,
+        "pezzi": 279.0,
+        "maggior_costo": 170.11,
+        "maggior_costo_annuo_a_prezzo_finale": 410.13,
+        "serie": [
+          {
+            "mese": "2025-11",
+            "prezzo": 9.8
+          },
+          {
+            "mese": "2025-12",
+            "prezzo": 9.8
+          },
+          {
+            "mese": "2026-01",
+            "prezzo": 9.95
+          },
+          {
+            "mese": "2026-02",
+            "prezzo": 9.95
+          },
+          {
+            "mese": "2026-03",
+            "prezzo": 10.2
+          },
+          {
+            "mese": "2026-04",
+            "prezzo": 10.2
+          },
+          {
+            "mese": "2026-05",
+            "prezzo": 10.45
+          },
+          {
+            "mese": "2026-06",
+            "prezzo": 10.7
+          },
+          {
+            "mese": "2026-07",
+            "prezzo": 10.7
+          },
+          {
+            "mese": "2026-08",
+            "prezzo": 10.95
+          },
+          {
+            "mese": "2026-09",
+            "prezzo": 11.1
+          },
+          {
+            "mese": "2026-10",
+            "prezzo": 11.27
+          }
+        ]
+      },
+      {
+        "articolo": "Crema massaggio neutra 1 l",
+        "prezzo_iniziale": 12.5,
+        "prezzo_finale": 14.4,
+        "aumento_percento": 15.2,
+        "numero_aumenti": 7,
+        "pezzi": 102.0,
+        "maggior_costo": 84.55,
+        "maggior_costo_annuo_a_prezzo_finale": 193.8,
+        "serie": [
+          {
+            "mese": "2025-11",
+            "prezzo": 12.5
+          },
+          {
+            "mese": "2025-12",
+            "prezzo": 12.5
+          },
+          {
+            "mese": "2026-01",
+            "prezzo": 12.7
+          },
+          {
+            "mese": "2026-02",
+            "prezzo": 12.7
+          },
+          {
+            "mese": "2026-03",
+            "prezzo": 13.0
+          },
+          {
+            "mese": "2026-04",
+            "prezzo": 13.0
+          },
+          {
+            "mese": "2026-05",
+            "prezzo": 13.35
+          },
+          {
+            "mese": "2026-06",
+            "prezzo": 13.65
+          },
+          {
+            "mese": "2026-07",
+            "prezzo": 13.65
+          },
+          {
+            "mese": "2026-08",
+            "prezzo": 14.0
+          },
+          {
+            "mese": "2026-09",
+            "prezzo": 14.2
+          },
+          {
+            "mese": "2026-10",
+            "prezzo": 14.4
+          }
+        ]
+      }
+    ],
+    "maggior_costo_totale": 254.66,
+    "maggior_costo_annuo_a_prezzi_finali": 603.93
+  },
+  "articoli_con_prezzo_variato": [
+    {
+      "fornitore": "Linea Pelle Distribuzione S.r.l.",
+      "articolo": "Cera depilatoria liposolubile barattolo 800 ml",
+      "minimo": 9.8,
+      "massimo": 11.27
+    },
+    {
+      "fornitore": "Linea Pelle Distribuzione S.r.l.",
+      "articolo": "Crema massaggio neutra 1 l",
+      "minimo": 12.5,
+      "massimo": 14.4
+    },
+    {
+      "fornitore": "Luce Pontina Energia S.p.A.",
+      "articolo": "Energia elettrica – consumo",
+      "minimo": 0.212,
+      "massimo": 0.268
+    },
+    {
+      "fornitore": "PagoFacile S.p.A.",
+      "articolo": "Commissioni su incassi con carta",
+      "minimo": 190.0,
+      "massimo": 395.0
+    }
+  ],
+  "gel": {
+    "dettaglio": [
+      {
+        "fornitore": "Nail Point Italia S.r.l.",
+        "prezzo": 24.0,
+        "pezzi": 30.0,
+        "spesa": 720.0
+      },
+      {
+        "fornitore": "Beauty Pro Forniture S.r.l.",
+        "prezzo": 28.3,
+        "pezzi": 25.0,
+        "spesa": 707.5
+      }
+    ],
+    "differenza_percento": 17.9,
+    "risparmio_possibile": 107.5
+  },
+  "doppione": [
+    {
+      "fornitore": "Dermovita Cosmetici S.p.A.",
+      "numero": "2025-330",
+      "data": "2025-11-11",
+      "imponibile": 1331.5,
+      "totale": 1624.43,
+      "file_doppio": "IT09999000117_00002.xml",
+      "file_originale": "IT09999000117_00001.xml"
+    }
+  ],
+  "pressoterapia": {
+    "fornitore": "TecnoBeauty Noleggi S.r.l.",
+    "data_ritiro": "2026-06-03",
+    "canoni_dopo_il_ritiro": 4,
+    "mesi": [
+      "2026-07",
+      "2026-08",
+      "2026-09",
+      "2026-10"
+    ],
+    "importo_non_dovuto": 1040.0,
+    "importo_non_dovuto_con_iva": 1268.8
+  },
+  "recuperabile_totale_imponibile": 2733.66,
+  "energia": {
+    "kwh_totali": 16710.0,
+    "spesa_totale_luce": 4375.96,
+    "prezzo_kwh_prima": 0.212,
+    "prezzo_kwh_dopo": 0.268,
+    "primo_mese_nuovo_prezzo": "2026-07",
+    "aumento_percento": 26.4,
+    "mese_piu_caro": "2026-08",
+    "maggior_costo_da_cambio_prezzo": 377.44,
+    "serie": [
+      {
+        "mese": "2025-11",
+        "kwh": 1180.0,
+        "prezzo": 0.212
+      },
+      {
+        "mese": "2025-12",
+        "kwh": 1290.0,
+        "prezzo": 0.212
+      },
+      {
+        "mese": "2026-01",
+        "kwh": 1310.0,
+        "prezzo": 0.212
+      },
+      {
+        "mese": "2026-02",
+        "kwh": 1220.0,
+        "prezzo": 0.212
+      },
+      {
+        "mese": "2026-03",
+        "kwh": 1120.0,
+        "prezzo": 0.212
+      },
+      {
+        "mese": "2026-04",
+        "kwh": 1040.0,
+        "prezzo": 0.212
+      },
+      {
+        "mese": "2026-05",
+        "kwh": 1090.0,
+        "prezzo": 0.212
+      },
+      {
+        "mese": "2026-06",
+        "kwh": 1720.0,
+        "prezzo": 0.212
+      },
+      {
+        "mese": "2026-07",
+        "kwh": 1890.0,
+        "prezzo": 0.268
+      },
+      {
+        "mese": "2026-08",
+        "kwh": 1940.0,
+        "prezzo": 0.268
+      },
+      {
+        "mese": "2026-09",
+        "kwh": 1760.0,
+        "prezzo": 0.268
+      },
+      {
+        "mese": "2026-10",
+        "kwh": 1150.0,
+        "prezzo": 0.268
+      }
+    ]
+  },
+  "laser": {
+    "spesa_annua": 9144.0,
+    "media_mensile": 762.0,
+    "canone": 690.0,
+    "manutenzione": 60.0
+  },
+  "smalti": {
+    "boccette": 314.0,
+    "spesa": 2166.6,
+    "per_colore": [
+      {
+        "colore": "Nude Rosa",
+        "boccette": 82.0
+      },
+      {
+        "colore": "Rosso Ciliegia",
+        "boccette": 69.0
+      },
+      {
+        "colore": "Bordeaux",
+        "boccette": 47.0
+      },
+      {
+        "colore": "Bianco Latte",
+        "boccette": 37.0
+      },
+      {
+        "colore": "Rosa Cipria",
+        "boccette": 22.0
+      },
+      {
+        "colore": "Corallo",
+        "boccette": 19.0
+      },
+      {
+        "colore": "Nero",
+        "boccette": 15.0
+      },
+      {
+        "colore": "Lilla",
+        "boccette": 11.0
+      },
+      {
+        "colore": "Verde Salvia",
+        "boccette": 9.0
+      },
+      {
+        "colore": "Blu Notte",
+        "boccette": 3.0
+      }
+    ]
+  },
+  "caffe": {
+    "confezioni": 23.0,
+    "capsule": 2300.0,
+    "spesa_capsule": 552.0,
+    "spesa_accoglienza": 827.5
+  },
+  "incassi_e_appuntamenti": {
+    "pos_canoni": 180.0,
+    "pos_commissioni": 3290.0,
+    "gestionale": 588.0,
+    "sms": 374.0,
+    "pacchetti_sms": 17.0,
+    "totale": 4432.0
+  },
+  "cera_barattoli": 279.0,
+  "lenzuolini_rotoli": 166.0,
+  "lavanderia": {
+    "kg": 1295.0,
+    "spesa": 2888.9
+  },
+  "natale": {
+    "cofanetti_comprati": 55.0,
+    "cofanetti_resi": 8.0,
+    "nota_di_credito": [
+      "NC2026-907",
+      "2026-01-20",
+      -176.0
+    ]
+  },
+  "solari": 54.0,
+  "formazione": [
+    {
+      "data": "2026-03-09",
+      "corso": "Corso laminazione ciglia – 1 partecipante",
+      "importo": 390.0
+    },
+    {
+      "data": "2026-09-14",
+      "corso": "Corso aggiornamento laser",
+      "importo": 560.0
+    }
+  ],
+  "per_regione": [
+    {
+      "regione": "Lazio",
+      "spesa": 42324.52,
+      "quota_percento": 62.4,
+      "fornitori": 12
+    },
+    {
+      "regione": "Lombardia",
+      "spesa": 13270.4,
+      "quota_percento": 19.6,
+      "fornitori": 3
+    },
+    {
+      "regione": "Toscana",
+      "spesa": 4164.7,
+      "quota_percento": 6.1,
+      "fornitori": 1
+    },
+    {
+      "regione": "Campania",
+      "spesa": 3886.9,
+      "quota_percento": 5.7,
+      "fornitori": 1
+    },
+    {
+      "regione": "Emilia-Romagna",
+      "spesa": 3200.0,
+      "quota_percento": 4.7,
+      "fornitori": 1
+    },
+    {
+      "regione": "Piemonte",
+      "spesa": 962.0,
+      "quota_percento": 1.4,
+      "fornitori": 1
+    }
+  ],
+  "provincia_di_latina": {
+    "spesa": 35552.66,
+    "quota_percento": 52.4,
+    "fornitori": 10
+  },
+  "pagamenti": [
+    {
+      "fornitore": "Accademia Estetica Avanzata S.r.l.",
+      "giorni": 0
+    },
+    {
+      "fornitore": "AgendaBella S.r.l.",
+      "giorni": 0
+    },
+    {
+      "fornitore": "MedLaser Rent S.r.l.",
+      "giorni": 0
+    },
+    {
+      "fornitore": "Nail Point Italia S.r.l.",
+      "giorni": 0
+    },
+    {
+      "fornitore": "PagoFacile S.p.A.",
+      "giorni": 0
+    },
+    {
+      "fornitore": "TecnoBeauty Noleggi S.r.l.",
+      "giorni": 0
+    },
+    {
+      "fornitore": "Immobiliare Circeo S.r.l.",
+      "giorni": 5
+    },
+    {
+      "fornitore": "FibraTel S.p.A.",
+      "giorni": 15
+    },
+    {
+      "fornitore": "Luce Pontina Energia S.p.A.",
+      "giorni": 20
+    },
+    {
+      "fornitore": "Acquedotto Pontino S.p.A.",
+      "giorni": 30
+    },
+    {
+      "fornitore": "Caffè Service Latina S.r.l.",
+      "giorni": 30
+    },
+    {
+      "fornitore": "Centro Servizi Contabili Latina S.r.l.",
+      "giorni": 30
+    },
+    {
+      "fornitore": "ClimaService Pontino S.r.l.",
+      "giorni": 30
+    },
+    {
+      "fornitore": "Lavanderia Industriale Tirrena S.n.c.",
+      "giorni": 30
+    },
+    {
+      "fornitore": "Linea Pelle Distribuzione S.r.l.",
+      "giorni": 30
+    },
+    {
+      "fornitore": "Pulito Subito Soc. Coop.",
+      "giorni": 30
+    },
+    {
+      "fornitore": "Stampa e Web Latina S.r.l.",
+      "giorni": 30
+    },
+    {
+      "fornitore": "Beauty Pro Forniture S.r.l.",
+      "giorni": 60
+    },
+    {
+      "fornitore": "Dermovita Cosmetici S.p.A.",
+      "giorni": 60
+    }
+  ],
+  "fattura_piu_grande": {
+    "fornitore": "Immobiliare Circeo S.r.l.",
+    "numero": "151/2025",
+    "data": "2025-11-01",
+    "imponibile": 1400.0
+  },
+  "fattura_piu_piccola": {
+    "fornitore": "FibraTel S.p.A.",
+    "numero": "2025793",
+    "data": "2025-11-10",
+    "imponibile": 54.7
+  },
+  "mese_piu_caro": {
+    "mese": "2026-09",
+    "spesa": 6628.18
+  },
+  "mese_meno_caro": {
+    "mese": "2026-01",
+    "spesa": 4551.92
+  },
+  "costi_fissi_mensili": {
+    "affitto": 1400.0,
+    "laser": 750.0,
+    "pulizie": 220.0,
+    "social": 150.0,
+    "gestionale": 49.0,
+    "fibra_e_sim": 54.7
+  },
+  "noleggi_totale": 12344.0
+}

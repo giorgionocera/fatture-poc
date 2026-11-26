@@ -1,0 +1,23 @@
+# macOS
+.DS_Store
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+
+# Dati generati e registro
+*.db
+*.sqlite
+*.sqlite3
+*.log
+
+# Configurazione con la chiave del modello (versionare solo un esempio)
+.env
+.env.*
+!.env.example
+
+# Impostazioni locali di Claude Code
+.claude/settings.local.json

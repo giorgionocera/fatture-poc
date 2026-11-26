@@ -1,0 +1,220 @@
+[
+  {
+    "numero": 1,
+    "domanda": "Quanto ho speso in tutto?",
+    "cifre_attese": [
+      67808.52
+    ],
+    "nota": ""
+  },
+  {
+    "numero": 2,
+    "domanda": "Qual è la mia spesa più grande?",
+    "cifre_attese": [
+      16800.0,
+      24.8
+    ],
+    "nota": "Affitto"
+  },
+  {
+    "numero": 3,
+    "domanda": "Quanto mi costa il laser?",
+    "cifre_attese": [
+      9144.0,
+      762.0
+    ],
+    "nota": ""
+  },
+  {
+    "numero": 4,
+    "domanda": "Quanto pago la luce?",
+    "cifre_attese": [
+      4375.96,
+      16710
+    ],
+    "nota": "Mese più caro: agosto 2026"
+  },
+  {
+    "numero": 5,
+    "domanda": "Chi mi ha alzato i prezzi?",
+    "cifre_attese": [
+      15.0,
+      15.2,
+      26.4
+    ],
+    "nota": "Linea Pelle (cera, crema massaggio) e luce da luglio 2026"
+  },
+  {
+    "numero": 6,
+    "domanda": "C'è qualcosa che pago due volte?",
+    "cifre_attese": [
+      1331.5
+    ],
+    "nota": "Dermovita, fattura 2025-330 dell'11/11/2025"
+  },
+  {
+    "numero": 7,
+    "domanda": "Pago qualcosa che non uso più?",
+    "cifre_attese": [
+      1040.0,
+      4
+    ],
+    "nota": "Pressoterapia ritirata il 03/06/2026"
+  },
+  {
+    "numero": 8,
+    "domanda": "Compro la stessa cosa da più fornitori?",
+    "cifre_attese": [
+      24.0,
+      28.3
+    ],
+    "nota": "Gel costruttore: Nail Point e Beauty Pro"
+  },
+  {
+    "numero": 9,
+    "domanda": "Quanti smalti ho comprato quest'anno?",
+    "cifre_attese": [
+      314,
+      2166.6
+    ],
+    "nota": ""
+  },
+  {
+    "numero": 10,
+    "domanda": "Di che colore ne compro di più?",
+    "cifre_attese": [
+      82
+    ],
+    "nota": "Nude Rosa"
+  },
+  {
+    "numero": 11,
+    "domanda": "Quanto caffè offriamo ai clienti?",
+    "cifre_attese": [
+      23,
+      2300,
+      552.0
+    ],
+    "nota": "Confezioni × 100 capsule"
+  },
+  {
+    "numero": 12,
+    "domanda": "Quanto mi costa incassare con le carte?",
+    "cifre_attese": [
+      3470.0,
+      3290.0,
+      180.0
+    ],
+    "nota": ""
+  },
+  {
+    "numero": 13,
+    "domanda": "Quanto spendo in lavanderia?",
+    "cifre_attese": [
+      2888.9,
+      1295
+    ],
+    "nota": ""
+  },
+  {
+    "numero": 14,
+    "domanda": "Quanto compro in provincia di Latina?",
+    "cifre_attese": [
+      35552.66,
+      52.4,
+      10
+    ],
+    "nota": ""
+  },
+  {
+    "numero": 15,
+    "domanda": "Chi vuole essere pagato subito?",
+    "cifre_attese": [
+      6
+    ],
+    "nota": "Accademia Estetica Avanzata, AgendaBella, MedLaser Rent, Nail Point Italia, PagoFacile, TecnoBeauty Noleggi"
+  },
+  {
+    "numero": 16,
+    "domanda": "Qual è stato il mese più caro?",
+    "cifre_attese": [
+      6628.18
+    ],
+    "nota": "Settembre 2026"
+  },
+  {
+    "numero": 17,
+    "domanda": "Quanti barattoli di cera ho usato?",
+    "cifre_attese": [
+      279
+    ],
+    "nota": "Le fatture dicono 'comprati', non 'usati'"
+  },
+  {
+    "numero": 18,
+    "domanda": "Ho ricevuto note di credito?",
+    "cifre_attese": [
+      1,
+      176.0,
+      8
+    ],
+    "nota": "Dermovita, 20/01/2026"
+  },
+  {
+    "numero": 19,
+    "domanda": "Quanto ho speso in formazione?",
+    "cifre_attese": [
+      950.0,
+      2
+    ],
+    "nota": "Marzo e settembre 2026"
+  },
+  {
+    "numero": 20,
+    "domanda": "Quanti solari ho comprato?",
+    "cifre_attese": [
+      54
+    ],
+    "nota": "Maggio e luglio 2026"
+  },
+  {
+    "numero": 21,
+    "domanda": "Quanta IVA ho pagato?",
+    "cifre_attese": [
+      14143.37
+    ],
+    "nota": ""
+  },
+  {
+    "numero": 22,
+    "domanda": "Quanti guanti ho comprato?",
+    "cifre_attese": [
+      93,
+      9300,
+      520.8
+    ],
+    "nota": "Confezioni × 100 guanti"
+  },
+  {
+    "numero": 23,
+    "domanda": "Da chi ricevo più fatture?",
+    "cifre_attese": [
+      16
+    ],
+    "nota": "Centro Servizi Contabili Latina"
+  },
+  {
+    "numero": 24,
+    "domanda": "Quanto ho fatturato quest'anno?",
+    "cifre_attese": [],
+    "nota": "Deve dire che non c'è: solo acquisti"
+  },
+  {
+    "numero": 25,
+    "domanda": "Quanto mi costano i dipendenti?",
+    "cifre_attese": [
+      1008.0
+    ],
+    "nota": "Stipendi assenti; c'è solo l'elaborazione delle buste paga"
+  }
+]

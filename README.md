@@ -21,6 +21,8 @@ Modello, indirizzo e nome dell'impresa stanno in `config.toml`; la chiave sta in
 
 Se qualcosa va storto: `cat PANICO.md` (cosa fare, comandi, frasi di riserva).
 
+In alto a destra, "[ Come funziona ]" apre in un'altra scheda lo schema dell'applicazione, pensato anche da mostrare alla sala: le fatture, la base dati, le quattro regole, il modello in uso, i quattro strumenti uno per uno, il controllo delle cifre e la provenienza. Ogni parte si apre con un clic, e i numeri sono quelli di adesso.
+
 1. `./demo reset` prima di cominciare: pagina vuota, nessuna fattura.
 2. Trascina sulla pagina la cartella `contesto/dati/fatture` (meglio una copia sul desktop). In alternativa, clic sul riquadro e scegli la cartella.
 3. Le tre caselle si accendono, poi compare la prima scoperta. **Per passare alla scoperta successiva: freccia destra** (oppure spazio o invio a campo vuoto, oppure clic su "Prossima scoperta"). La cifra a destra sale a ogni scoperta fino a 2.733,66 €.
@@ -104,7 +106,8 @@ app/
   registro.py      registro di domande, interrogazioni e risultati
   server.py        le pagine e le API
   cli.py           batteria di prova e comandi da terminale
-  static/          pagina, lettore della fattura, stile, grafici, caratteri (tutto locale)
+  schema.py        la pagina "Come funziona", con i valori letti dal vivo
+  static/          pagina, lettore della fattura, schema, stile, grafici, caratteri (tutto locale)
 tests/             test automatici
 prove/             riformulazioni e domande fuori dai dati
 contesto/          specifica, fatture e numeri attesi (non si modifica)

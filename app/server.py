@@ -11,7 +11,7 @@ from fastapi.responses import FileResponse, JSONResponse, StreamingResponse
 from fastapi.staticfiles import StaticFiles
 
 from . import analisi as prima_analisi
-from . import caricamento
+from . import caricamento, schema
 from .agente import Agente, per_la_storia
 from .config import LAVORO, carica_config, file_fornitori
 from .modello import Modello
@@ -77,6 +77,23 @@ def leggi():
     return JSONResponse({**stato, "versione": versione_pagina(), "pagina": cfg["pagina"],
                          "impresa": {k: imp.get(k) for k in ("nome", "sigla", "attivita", "dicitura", "tema")}},
                         headers={"Cache-Control": "no-store"})
+
+
+@app.get("/come-funziona")
+def pagina_schema():
+    return FileResponse(STATICI / "schema.html", headers={"Cache-Control": "no-store"})
+
+
+@app.get("/api/schema")
+def leggi_schema():
+    """Lo schema dell'applicazione con i valori di adesso: modello, dati, regole, controlli, prove."""
+    analisi = None
+    if stato["caricato"] and FILE_DB.exists():
+        try:
+            analisi = agente().analisi()
+        except Exception:
+            analisi = None
+    return JSONResponse(schema.descrivi(cfg, stato, FILE_DB, analisi), headers={"Cache-Control": "no-store"})
 
 
 @app.get("/fattura/{nome}")

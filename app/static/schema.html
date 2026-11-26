@@ -1,0 +1,232 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="data:,">
+<title>Come funziona</title>
+<link rel="stylesheet" href="/static/stile.css">
+<style>
+  .schema-zone { flex: 1; min-height: 0; display: grid; grid-template-columns: 1180px 1fr; gap: 40px; }
+  .tela { position: relative; width: 1180px; height: 940px; }
+  .tela svg.frecce { position: absolute; inset: 0; width: 1180px; height: 940px; overflow: visible; pointer-events: none; }
+  .frecce .linea { fill: none; stroke: var(--inchiostro); stroke-width: 2; }
+  .frecce .linea.tratteggio { stroke: var(--accento); stroke-dasharray: 7 6; }
+  .frecce .punta { fill: var(--inchiostro); }
+  .frecce .punta.accento { fill: var(--accento); }
+  .frecce text { font-family: var(--mono); font-size: 20px; fill: var(--grigio); }
+  .frecce text.accento { fill: var(--accento); }
+  .corsia { position: absolute; left: 0; }
+  .corsia .sotto { font-size: 20px; color: var(--grigio); margin-top: 4px; }
+  .parte { position: absolute; width: 200px; height: 170px; border: 2px solid var(--inchiostro); background: var(--carta);
+           padding: 12px 14px; text-align: left; font: inherit; color: inherit; cursor: pointer; display: flex; flex-direction: column; gap: 6px;
+           transition: background .15s, border-color .15s, box-shadow .15s; }
+  .parte .etichetta { font-size: 20px; }
+  .parte .nome, .parte .riga, .parte .etichetta { white-space: nowrap; }
+  .parte .nome { font-size: 24px; font-weight: 650; letter-spacing: -0.02em; line-height: 1.12; }
+  .parte .riga { margin-top: auto; font-size: 20px; line-height: 1.2; color: var(--grigio); overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+  .parte:hover { background: #fff; }
+  .parte:focus-visible { outline: 3px solid var(--accento); outline-offset: 3px; }
+  .parte.scelta { border-color: var(--accento); background: var(--accento-tenue); box-shadow: 6px 6px 0 var(--accento); }
+  .parte.strumento.scelta { box-shadow: 4px 4px 0 var(--accento); }
+  .gruppo { position: absolute; border: 2px solid var(--inchiostro); background: var(--fondo); transition: border-color .15s, box-shadow .15s; }
+  .gruppo.scelta { border-color: var(--accento); box-shadow: 6px 6px 0 var(--accento); }
+  .parte.testa-gruppo { border: 0; background: transparent; box-shadow: none; }
+  .parte.testa-gruppo.scelta { background: var(--accento-tenue); }
+  .parte.strumento { gap: 2px; padding: 10px 12px; }
+  .parte.strumento .etichetta { font-size: 20px; text-transform: none; letter-spacing: 0.02em; }
+  .parte.strumento .nome { font-size: 20px; line-height: 1.2; }
+  .parte.cuore { border-width: 3px; }
+  .pannello { min-height: 0; border: 2px solid var(--inchiostro); background: var(--carta); display: flex; flex-direction: column; }
+  .pannello-testa { padding: 24px 28px 16px; border-bottom: 2px solid var(--inchiostro); flex: none; }
+  .pannello-testa h1 { font-size: 46px; font-weight: 700; letter-spacing: -0.04em; line-height: 1.05; margin-top: 8px; }
+  .pannello-testa .riga { font-family: var(--mono); font-size: 20px; color: var(--grigio); margin-top: 10px; }
+  .pannello-corpo { flex: 1; min-height: 0; overflow-y: auto; padding: 18px 28px 28px; scrollbar-width: thin; scrollbar-color: var(--linea) transparent; }
+  .pannello-corpo > p { font-size: 22px; line-height: 1.4; }
+  .voci-pannello { margin: 18px 0 0; border-top: 1px solid var(--linea); }
+  .voci-pannello div { display: flex; justify-content: space-between; gap: 18px; padding: 9px 0; border-bottom: 1px solid var(--linea); font-size: 20px; }
+  .voci-pannello dt { color: var(--grigio); }
+  .voci-pannello dd { margin: 0; font-weight: 600; text-align: right; }
+  .elenco-pannello { margin-top: 22px; }
+  .elenco-pannello ul { margin: 8px 0 0; padding-left: 22px; font-size: 20px; line-height: 1.35; }
+  .elenco-pannello li { margin: 6px 0; }
+  .pannello details.tecnici pre { max-height: 360px; overflow: auto; font-size: 20px; }
+  .torna { font-family: var(--mono); font-size: 20px; color: var(--grigio); }
+</style>
+</head>
+<body>
+<div id="palco">
+  <header class="testata">
+    <div class="marchio"><span class="sigla" id="sigla"></span><span id="nome-impresa"></span><span class="attivita">Come funziona</span></div>
+    <div class="torna">Clicca una parte per i dettagli · chiudi questa scheda per tornare alla demo</div>
+  </header>
+  <main class="schema-zone">
+    <div class="tela" id="tela">
+      <svg class="frecce" id="frecce" viewBox="0 0 1180 940" aria-hidden="true"></svg>
+    </div>
+    <aside class="pannello" aria-live="polite">
+      <div class="pannello-testa">
+        <div class="etichetta" id="p-etichetta"></div>
+        <h1 id="p-titolo"></h1>
+        <div class="riga" id="p-riga"></div>
+      </div>
+      <div class="pannello-corpo" id="p-corpo"></div>
+    </aside>
+  </main>
+</div>
+<script>
+(function () {
+  const $ = s => document.querySelector(s);
+  const crea = (tag, classe, testo) => { const e = document.createElement(tag); if (classe) e.className = classe; if (testo != null) e.textContent = testo; return e; };
+  const SVG = "http://www.w3.org/2000/svg";
+
+  // Lo schema: dove sta ogni parte (coordinate della tela, 1180 × 940): [x, y, larghezza, altezza].
+  const H = 170, Y1 = 72, Y2 = 368;
+  const GRUPPO = [480, Y2, 250, 526];                 // il riquadro dei quattro strumenti
+  const STRUMENTI = ["struttura_dati", "analisi_iniziale", "interroga", "mostra_grafico"];
+  const POSTI = {
+    fatture: [0, Y1, 200, H], lettura: [245, Y1, 200, H], basedati: [490, Y1, 200, H], regole: [735, Y1, 200, H], scoperte: [980, Y1, 200, H],
+    domanda: [0, Y2, 180, H], modello: [220, Y2, 220, H], strumenti: [GRUPPO[0], Y2, GRUPPO[2], 96],
+    controllo: [770, Y2, 190, H], risposta: [1000, Y2, 180, H],
+  };
+  STRUMENTI.forEach((n, i) => { POSTI["t_" + n] = [GRUPPO[0] + 12, Y2 + 96 + i * 106, GRUPPO[2] - 24, 100]; });
+  const CORSIE = [
+    [0, "[ 1 · Prima analisi ]", "regole fisse: le cifre le mette il codice"],
+    [296, "[ 2 · Domande libere ]", "il modello cerca, il codice controlla"],
+  ];
+  const ORDINE = ["fatture", "lettura", "basedati", "regole", "scoperte", "domanda", "modello", "strumenti",
+                  ...STRUMENTI.map(n => "t_" + n), "controllo", "risposta"];
+  const NUMERI = { fatture: "01", lettura: "02", basedati: "03", regole: "04", scoperte: "05", domanda: "06",
+                   modello: "07", strumenti: "08", controllo: "09", risposta: "10" };
+  const etichetta = id => id.startsWith("t_") ? `[ 08 · ${id.slice(2)} ]` : `[ ${NUMERI[id]} ]`;
+
+  function scala() {
+    const k = Math.min(innerWidth / 1920, innerHeight / 1080);
+    $("#palco").style.transform = `translate(-50%, -50%) scale(${k})`;
+  }
+  addEventListener("resize", scala); scala();
+
+  function svg(tag, attributi, testo) {
+    const e = document.createElementNS(SVG, tag);
+    for (const [k, v] of Object.entries(attributi)) e.setAttribute(k, v);
+    if (testo) e.textContent = testo;
+    return e;
+  }
+  function freccia(d, punta, classe = "") {
+    const f = $("#frecce");
+    f.append(svg("path", { d, class: "linea " + classe }));
+    const [x, y, verso] = punta;   // verso: d (destra), s (sinistra), su, giu
+    const p = { d: `${x},${y} ${x - 12},${y - 7} ${x - 12},${y + 7}`, s: `${x},${y} ${x + 12},${y - 7} ${x + 12},${y + 7}`,
+                su: `${x},${y} ${x - 7},${y + 12} ${x + 7},${y + 12}`, giu: `${x},${y} ${x - 7},${y - 12} ${x + 7},${y - 12}` }[verso];
+    f.append(svg("polygon", { points: p, class: "punta " + (classe.includes("tratteggio") ? "accento" : "") }));
+  }
+  function disegnaFrecce() {
+    const f = $("#frecce");
+    const P = POSTI, m1 = Y1 + H / 2, m2 = Y2 + H / 2;
+    const destra = (da, a, y) => freccia(`M${P[da][0] + P[da][2] + 2},${y} H${P[a][0] - 2}`, [P[a][0] - 2, y, "d"]);
+    ["fatture", "lettura", "basedati", "regole", "scoperte"].reduce((da, a) => (destra(da, a, m1), a));
+    destra("domanda", "modello", m2);
+    destra("controllo", "risposta", m2);
+    // il modello chiede, lo strumento risponde
+    const mx = P.modello[0] + P.modello[2] + 2, gx = GRUPPO[0] - 2;
+    freccia(`M${mx},${m2 - 14} H${gx}`, [gx, m2 - 14, "d"]);
+    freccia(`M${gx},${m2 + 14} H${mx}`, [mx, m2 + 14, "s"]);
+    // dagli strumenti al controllo: i risultati, con cui si verificano le cifre
+    freccia(`M${GRUPPO[0] + GRUPPO[2] + 2},${m2} H${P.controllo[0] - 2}`, [P.controllo[0] - 2, m2, "d"]);
+    // gli strumenti leggono la base dati, senza poterla cambiare
+    const cx = P.basedati[0] + P.basedati[2] / 2;
+    freccia(`M${cx},${Y2 - 2} V${Y1 + H + 2}`, [cx, Y1 + H + 2, "su"]);
+    f.append(svg("text", { x: cx + 14, y: Y1 + H + 72 }, "solo lettura"));
+    // se una cifra non torna, il modello riscrive una volta: la linea passa sotto il riquadro degli strumenti
+    const giu = Y2 + H + 2, fondo = GRUPPO[1] + GRUPPO[3] + 24;
+    const da = P.controllo[0] + P.controllo[2] / 2, a = P.modello[0] + P.modello[2] / 2;
+    freccia(`M${da},${giu} V${fondo} H${a} V${giu}`, [a, giu, "su"], "tratteggio");
+    f.append(svg("text", { x: da + 14, y: giu + 110, class: "accento" }, "cifra non torna: riscrive"));
+  }
+
+  let dati = null, scelta = (location.hash || "#modello").slice(1);
+
+  function disegnaParti() {
+    const tela = $("#tela");
+    tela.querySelectorAll(".parte, .corsia, .gruppo").forEach(e => e.remove());
+    for (const [y, testo, sotto] of CORSIE) {
+      const c = crea("div", "corsia"); c.style.top = y + "px";
+      c.append(crea("div", "etichetta", testo), crea("div", "sotto", sotto));
+      tela.append(c);
+    }
+    const g = crea("div", "gruppo" + (scelta === "strumenti" ? " scelta" : ""));
+    Object.assign(g.style, { left: GRUPPO[0] + "px", top: GRUPPO[1] + "px", width: GRUPPO[2] + "px", height: GRUPPO[3] + "px" });
+    tela.append(g);
+    for (const id of ORDINE) {
+      const p = dati.parti[id];
+      if (!p) continue;
+      const [x, y, w, h] = POSTI[id];
+      const classi = ["parte", id === "modello" ? "cuore" : "", id === "strumenti" ? "testa-gruppo" : "",
+                      id.startsWith("t_") ? "strumento" : "", id === scelta ? "scelta" : ""].filter(Boolean).join(" ");
+      const b = crea("button", classi);
+      b.type = "button"; b.dataset.id = id;
+      Object.assign(b.style, { left: x + "px", top: y + "px", width: w + "px", height: h + "px" });
+      if (id.startsWith("t_")) b.append(crea("span", "etichetta", id.slice(2)), crea("span", "nome", p.titolo));
+      else if (id === "strumenti") b.append(crea("span", "etichetta", etichetta(id)), crea("span", "nome", p.titolo));
+      else b.append(crea("span", "etichetta", etichetta(id)), crea("span", "nome", p.titolo), crea("span", "riga", p.riga));
+      b.addEventListener("click", () => scegli(id));
+      tela.append(b);
+    }
+  }
+
+  function scegli(id) {
+    scelta = id;
+    history.replaceState(null, "", "#" + id);
+    document.querySelectorAll(".parte").forEach(b => b.classList.toggle("scelta", b.dataset.id === id));
+    document.querySelector(".gruppo").classList.toggle("scelta", id === "strumenti");
+    const p = dati.parti[id];
+    $("#p-etichetta").textContent = etichetta(id);
+    $("#p-titolo").textContent = p.titolo;
+    $("#p-riga").textContent = p.riga;
+    const corpo = $("#p-corpo");
+    corpo.replaceChildren(crea("p", "", p.testo));
+    if (p.voci.length) {
+      const dl = crea("dl", "voci-pannello");
+      for (const [k, v] of p.voci) { const d = crea("div"); d.append(crea("dt", "", k), crea("dd", "", v)); dl.append(d); }
+      corpo.append(dl);
+    }
+    for (const e of p.elenchi) {
+      if (!e.righe.length) continue;
+      const s = crea("section", "elenco-pannello"), ul = crea("ul");
+      for (const r of e.righe) ul.append(crea("li", "", r));
+      s.append(crea("div", "etichetta scura", e.titolo), ul);
+      corpo.append(s);
+    }
+    for (const t of p.tecnici) {
+      const d = crea("details", "tecnici");
+      d.append(crea("summary", "", t.titolo), crea("pre", "", t.testo));
+      corpo.append(d);
+    }
+    corpo.scrollTop = 0;
+  }
+
+  async function carica() {
+    try {
+      dati = await (await fetch("/api/schema")).json();
+    } catch (e) { return; }
+    const imp = dati.impresa, tema = imp.tema || {};
+    if (tema.accento) document.documentElement.style.setProperty("--accento", tema.accento);
+    $("#sigla").textContent = imp.sigla || ""; $("#nome-impresa").textContent = imp.nome;
+    document.title = `Come funziona · ${imp.nome}`;
+    if (!dati.parti[scelta]) scelta = "modello";
+    disegnaParti(); scegli(scelta);
+  }
+
+  // frecce: tra le parti, una sola volta; parti e numeri: ricaricati quando si torna su questa scheda
+  disegnaFrecce();
+  carica();
+  addEventListener("keydown", e => {
+    const i = ORDINE.indexOf(scelta);
+    if (e.key === "ArrowRight" || e.key === "ArrowDown") { e.preventDefault(); scegli(ORDINE[(i + 1) % ORDINE.length]); }
+    if (e.key === "ArrowLeft" || e.key === "ArrowUp") { e.preventDefault(); scegli(ORDINE[(i - 1 + ORDINE.length) % ORDINE.length]); }
+  });
+  document.addEventListener("visibilitychange", () => { if (!document.hidden) carica(); });
+})();
+</script>
+</body>
+</html>

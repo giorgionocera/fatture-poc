@@ -19,6 +19,8 @@ Modello, indirizzo e nome dell'impresa stanno in `config.toml`; la chiave sta in
 
 ## Sul palco
 
+Se qualcosa va storto: `cat PANICO.md` (cosa fare, comandi, frasi di riserva).
+
 1. `./demo reset` prima di cominciare: pagina vuota, nessuna fattura.
 2. Trascina sulla pagina la cartella `contesto/dati/fatture` (meglio una copia sul desktop). In alternativa, clic sul riquadro e scegli la cartella.
 3. Le tre caselle si accendono, poi compare la prima scoperta. **Per passare alla scoperta successiva: freccia destra** (oppure spazio o invio a campo vuoto, oppure clic su "Prossima scoperta"). La cifra a destra sale a ogni scoperta fino a 2.733,66 €.

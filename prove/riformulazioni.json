@@ -1,0 +1,488 @@
+[
+ {
+  "numero": "1a",
+  "domanda": "Qual è il totale delle spese dell'anno?",
+  "cifre_attese": [
+   67808.52
+  ],
+  "nota": "altra formulazione",
+  "fuori_dai_dati": false
+ },
+ {
+  "numero": "1b",
+  "domanda": "quanto abbiamo cacciato in tutto st'anno",
+  "cifre_attese": [
+   67808.52
+  ],
+  "nota": "colloquiale o sgrammaticata",
+  "fuori_dai_dati": false
+ },
+ {
+  "numero": "2a",
+  "domanda": "Dove spendo di più?",
+  "cifre_attese": [
+   16800.0,
+   24.8
+  ],
+  "nota": "altra formulazione",
+  "fuori_dai_dati": false
+ },
+ {
+  "numero": "2b",
+  "domanda": "la voce che mi costa di piu qual'è",
+  "cifre_attese": [
+   16800.0,
+   24.8
+  ],
+  "nota": "colloquiale o sgrammaticata",
+  "fuori_dai_dati": false
+ },
+ {
+  "numero": "3a",
+  "domanda": "Quanto pago per il laser in un anno?",
+  "cifre_attese": [
+   9144.0,
+   762.0
+  ],
+  "nota": "altra formulazione",
+  "fuori_dai_dati": false
+ },
+ {
+  "numero": "3b",
+  "domanda": "il laser quanto mi viene a costare al mese e all anno",
+  "cifre_attese": [
+   9144.0,
+   762.0
+  ],
+  "nota": "colloquiale o sgrammaticata",
+  "fuori_dai_dati": false
+ },
+ {
+  "numero": "4a",
+  "domanda": "Quanto ho speso di corrente?",
+  "cifre_attese": [
+   4375.96,
+   16710
+  ],
+  "nota": "altra formulazione",
+  "fuori_dai_dati": false
+ },
+ {
+  "numero": "4b",
+  "domanda": "la bolletta della luce quant è in tutto",
+  "cifre_attese": [
+   4375.96,
+   16710
+  ],
+  "nota": "colloquiale o sgrammaticata",
+  "fuori_dai_dati": false
+ },
+ {
+  "numero": "5a",
+  "domanda": "Ci sono fornitori che hanno aumentato i prezzi?",
+  "cifre_attese": [
+   15.0,
+   15.2,
+   26.4
+  ],
+  "nota": "altra formulazione",
+  "fuori_dai_dati": false
+ },
+ {
+  "numero": "5b",
+  "domanda": "chi è che mi sta fregando coi prezzi che salgono",
+  "cifre_attese": [
+   15.0,
+   15.2,
+   26.4
+  ],
+  "nota": "colloquiale o sgrammaticata",
+  "fuori_dai_dati": false
+ },
+ {
+  "numero": "6a",
+  "domanda": "Ho delle fatture doppie?",
+  "cifre_attese": [
+   1331.5
+  ],
+  "nota": "altra formulazione",
+  "fuori_dai_dati": false
+ },
+ {
+  "numero": "6b",
+  "domanda": "ce qualche fattura che mi e arrivata 2 volte",
+  "cifre_attese": [
+   1331.5
+  ],
+  "nota": "colloquiale o sgrammaticata",
+  "fuori_dai_dati": false
+ },
+ {
+  "numero": "7a",
+  "domanda": "Sto pagando un noleggio per qualcosa che ho restituito?",
+  "cifre_attese": [
+   1040.0,
+   4
+  ],
+  "nota": "altra formulazione",
+  "fuori_dai_dati": false
+ },
+ {
+  "numero": "7b",
+  "domanda": "sto ancora a pagà roba che ho ridato indietro?",
+  "cifre_attese": [
+   1040.0,
+   4
+  ],
+  "nota": "colloquiale o sgrammaticata",
+  "fuori_dai_dati": false
+ },
+ {
+  "numero": "8a",
+  "domanda": "C'è un prodotto che pago più caro da un fornitore che da un altro?",
+  "cifre_attese": [
+   24.0,
+   28.3
+  ],
+  "nota": "altra formulazione",
+  "fuori_dai_dati": false
+ },
+ {
+  "numero": "8b",
+  "domanda": "lo stesso prodotto lo prendo da due parti a prezzi diversi?",
+  "cifre_attese": [
+   24.0,
+   28.3
+  ],
+  "nota": "colloquiale o sgrammaticata",
+  "fuori_dai_dati": false
+ },
+ {
+  "numero": "9a",
+  "domanda": "Quante boccette di smalto ho preso in un anno?",
+  "cifre_attese": [
+   314,
+   2166.6
+  ],
+  "nota": "altra formulazione",
+  "fuori_dai_dati": false
+ },
+ {
+  "numero": "9b",
+  "domanda": "smalti quanti ne ho presi",
+  "cifre_attese": [
+   314,
+   2166.6
+  ],
+  "nota": "colloquiale o sgrammaticata",
+  "fuori_dai_dati": false
+ },
+ {
+  "numero": "10a",
+  "domanda": "Qual è il colore di smalto che compro di più?",
+  "cifre_attese": [
+   82
+  ],
+  "nota": "altra formulazione",
+  "fuori_dai_dati": false
+ },
+ {
+  "numero": "10b",
+  "domanda": "lo smalto che prendo di più che colore è",
+  "cifre_attese": [
+   82
+  ],
+  "nota": "colloquiale o sgrammaticata",
+  "fuori_dai_dati": false
+ },
+ {
+  "numero": "11a",
+  "domanda": "Quante capsule di caffè abbiamo comprato?",
+  "cifre_attese": [
+   23,
+   2300,
+   552.0
+  ],
+  "nota": "altra formulazione",
+  "fuori_dai_dati": false
+ },
+ {
+  "numero": "11b",
+  "domanda": "caffe per le clienti quanto ne prendiamo",
+  "cifre_attese": [
+   23,
+   2300,
+   552.0
+  ],
+  "nota": "colloquiale o sgrammaticata",
+  "fuori_dai_dati": false
+ },
+ {
+  "numero": "12a",
+  "domanda": "Quanto pago di commissioni e canone per il POS?",
+  "cifre_attese": [
+   3470.0,
+   3290.0,
+   180.0
+  ],
+  "nota": "altra formulazione",
+  "fuori_dai_dati": false
+ },
+ {
+  "numero": "12b",
+  "domanda": "il pos quanto mi mangia",
+  "cifre_attese": [
+   3470.0,
+   3290.0,
+   180.0
+  ],
+  "nota": "colloquiale o sgrammaticata",
+  "fuori_dai_dati": false
+ },
+ {
+  "numero": "13a",
+  "domanda": "Qual è la spesa per la lavanderia?",
+  "cifre_attese": [
+   2888.9,
+   1295
+  ],
+  "nota": "altra formulazione",
+  "fuori_dai_dati": false
+ },
+ {
+  "numero": "13b",
+  "domanda": "la lavanderia quanto mi costa all'anno",
+  "cifre_attese": [
+   2888.9,
+   1295
+  ],
+  "nota": "colloquiale o sgrammaticata",
+  "fuori_dai_dati": false
+ },
+ {
+  "numero": "14a",
+  "domanda": "Quanta parte della spesa resta in provincia di Latina?",
+  "cifre_attese": [
+   35552.66,
+   52.4,
+   10
+  ],
+  "nota": "altra formulazione",
+  "fuori_dai_dati": false
+ },
+ {
+  "numero": "14b",
+  "domanda": "quanto spendo dai fornitori della provincia di latina",
+  "cifre_attese": [
+   35552.66,
+   52.4,
+   10
+  ],
+  "nota": "colloquiale o sgrammaticata",
+  "fuori_dai_dati": false
+ },
+ {
+  "numero": "15a",
+  "domanda": "Quali fornitori non mi danno dilazione di pagamento?",
+  "cifre_attese": [
+   6
+  ],
+  "nota": "altra formulazione",
+  "fuori_dai_dati": false
+ },
+ {
+  "numero": "15b",
+  "domanda": "chi vuole i soldi subito appena fa fattura",
+  "cifre_attese": [
+   6
+  ],
+  "nota": "colloquiale o sgrammaticata",
+  "fuori_dai_dati": false
+ },
+ {
+  "numero": "16a",
+  "domanda": "In che mese ho speso di più?",
+  "cifre_attese": [
+   6628.18
+  ],
+  "nota": "altra formulazione",
+  "fuori_dai_dati": false
+ },
+ {
+  "numero": "16b",
+  "domanda": "il mese peggiore qual è stato",
+  "cifre_attese": [
+   6628.18
+  ],
+  "nota": "colloquiale o sgrammaticata",
+  "fuori_dai_dati": false
+ },
+ {
+  "numero": "17a",
+  "domanda": "Quanta cera ho comprato?",
+  "cifre_attese": [
+   279
+  ],
+  "nota": "altra formulazione",
+  "fuori_dai_dati": false
+ },
+ {
+  "numero": "17b",
+  "domanda": "barattoli di cera quanti ne ho fatti fuori",
+  "cifre_attese": [
+   279
+  ],
+  "nota": "colloquiale o sgrammaticata",
+  "fuori_dai_dati": false
+ },
+ {
+  "numero": "18a",
+  "domanda": "Qualche fornitore mi ha fatto uno storno?",
+  "cifre_attese": [
+   1,
+   176.0,
+   8
+  ],
+  "nota": "altra formulazione",
+  "fuori_dai_dati": false
+ },
+ {
+  "numero": "18b",
+  "domanda": "note di credito ne ho avute?",
+  "cifre_attese": [
+   1,
+   176.0,
+   8
+  ],
+  "nota": "colloquiale o sgrammaticata",
+  "fuori_dai_dati": false
+ },
+ {
+  "numero": "19a",
+  "domanda": "Quanto mi sono costati i corsi di formazione?",
+  "cifre_attese": [
+   950.0,
+   2
+  ],
+  "nota": "altra formulazione",
+  "fuori_dai_dati": false
+ },
+ {
+  "numero": "19b",
+  "domanda": "corsi quanto ho speso",
+  "cifre_attese": [
+   950.0,
+   2
+  ],
+  "nota": "colloquiale o sgrammaticata",
+  "fuori_dai_dati": false
+ },
+ {
+  "numero": "20a",
+  "domanda": "Quante creme solari ho acquistato?",
+  "cifre_attese": [
+   54
+  ],
+  "nota": "altra formulazione",
+  "fuori_dai_dati": false
+ },
+ {
+  "numero": "20b",
+  "domanda": "i solari quanti ne ho presi st'estate",
+  "cifre_attese": [
+   54
+  ],
+  "nota": "colloquiale o sgrammaticata",
+  "fuori_dai_dati": false
+ },
+ {
+  "numero": "21a",
+  "domanda": "A quanto ammonta l'IVA sulle fatture ricevute?",
+  "cifre_attese": [
+   14143.37
+  ],
+  "nota": "altra formulazione",
+  "fuori_dai_dati": false
+ },
+ {
+  "numero": "21b",
+  "domanda": "di iva quanto ho pagato in tutto",
+  "cifre_attese": [
+   14143.37
+  ],
+  "nota": "colloquiale o sgrammaticata",
+  "fuori_dai_dati": false
+ },
+ {
+  "numero": "22a",
+  "domanda": "Quante confezioni di guanti ho preso?",
+  "cifre_attese": [
+   93,
+   9300,
+   520.8
+  ],
+  "nota": "altra formulazione",
+  "fuori_dai_dati": false
+ },
+ {
+  "numero": "22b",
+  "domanda": "guanti quanti ne abbiamo comprati",
+  "cifre_attese": [
+   93,
+   9300,
+   520.8
+  ],
+  "nota": "colloquiale o sgrammaticata",
+  "fuori_dai_dati": false
+ },
+ {
+  "numero": "23a",
+  "domanda": "Qual è il fornitore che mi manda più fatture?",
+  "cifre_attese": [
+   16
+  ],
+  "nota": "altra formulazione",
+  "fuori_dai_dati": false
+ },
+ {
+  "numero": "23b",
+  "domanda": "chi è che mi manda piu fatture di tutti",
+  "cifre_attese": [
+   16
+  ],
+  "nota": "colloquiale o sgrammaticata",
+  "fuori_dai_dati": false
+ },
+ {
+  "numero": "24a",
+  "domanda": "Qual è stato il mio fatturato?",
+  "cifre_attese": [],
+  "nota": "altra formulazione",
+  "fuori_dai_dati": true
+ },
+ {
+  "numero": "24b",
+  "domanda": "quanto ho incassato st'anno",
+  "cifre_attese": [],
+  "nota": "colloquiale o sgrammaticata",
+  "fuori_dai_dati": true
+ },
+ {
+  "numero": "25a",
+  "domanda": "Quanto spendo per il personale?",
+  "cifre_attese": [
+   1008.0
+  ],
+  "nota": "altra formulazione",
+  "fuori_dai_dati": false
+ },
+ {
+  "numero": "25b",
+  "domanda": "le ragazze quanto mi costano",
+  "cifre_attese": [
+   1008.0
+  ],
+  "nota": "colloquiale o sgrammaticata",
+  "fuori_dai_dati": false
+ }
+]

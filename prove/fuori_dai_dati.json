@@ -1,0 +1,72 @@
+[
+ {
+  "numero": "F1",
+  "domanda": "Quanti clienti ho avuto quest'anno?",
+  "cifre_attese": [],
+  "nota": "nelle fatture non c'è",
+  "fuori_dai_dati": true
+ },
+ {
+  "numero": "F2",
+  "domanda": "Quanto ho guadagnato?",
+  "cifre_attese": [],
+  "nota": "nelle fatture non c'è",
+  "fuori_dai_dati": true
+ },
+ {
+  "numero": "F3",
+  "domanda": "Qual è il trattamento che vendo di più?",
+  "cifre_attese": [],
+  "nota": "nelle fatture non c'è",
+  "fuori_dai_dati": true
+ },
+ {
+  "numero": "F4",
+  "domanda": "Quanto prende di stipendio Giulia?",
+  "cifre_attese": [],
+  "nota": "nelle fatture non c'è",
+  "fuori_dai_dati": true
+ },
+ {
+  "numero": "F5",
+  "domanda": "Quanto ho sul conto in banca?",
+  "cifre_attese": [],
+  "nota": "nelle fatture non c'è",
+  "fuori_dai_dati": true
+ },
+ {
+  "numero": "F6",
+  "domanda": "Quante tasse devo pagare quest'anno?",
+  "cifre_attese": [],
+  "nota": "nelle fatture non c'è",
+  "fuori_dai_dati": true
+ },
+ {
+  "numero": "F7",
+  "domanda": "Quanti appuntamenti ho fatto a marzo?",
+  "cifre_attese": [],
+  "nota": "nelle fatture non c'è",
+  "fuori_dai_dati": true
+ },
+ {
+  "numero": "F8",
+  "domanda": "A quanto vendo la ceretta gambe?",
+  "cifre_attese": [],
+  "nota": "nelle fatture non c'è",
+  "fuori_dai_dati": true
+ },
+ {
+  "numero": "F9",
+  "domanda": "Quanto ho incassato in contanti?",
+  "cifre_attese": [],
+  "nota": "nelle fatture non c'è",
+  "fuori_dai_dati": true
+ },
+ {
+  "numero": "F10",
+  "domanda": "Quante ore hanno lavorato le dipendenti?",
+  "cifre_attese": [],
+  "nota": "nelle fatture non c'è",
+  "fuori_dai_dati": true
+ }
+]

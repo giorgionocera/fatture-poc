@@ -23,6 +23,7 @@ case "${1:-}" in
   test)     docker compose run --rm --no-deps app python -m pytest "${@:2}" ;;
   verifica) docker compose run --rm --no-deps app python -m app.cli verifica ;;
   prova)    docker compose run --rm --no-deps app python -m app.cli prova "${@:2}" ;;
+  riformulazioni|fuori) docker compose run --rm --no-deps app python -m app.cli "$1" ;;
   domanda)  docker compose run --rm --no-deps app python -m app.cli domanda "${@:2}" ;;
   registro) tail -n "${2:-40}" lavoro/registro.jsonl ;;
   diario)   docker compose logs --tail 80 app ;;
@@ -36,6 +37,8 @@ Uso: ./demo <comando>
   test             test automatici su caricamento, regole, strumenti e controllo delle cifre
   verifica         numeri del caricamento e totale recuperabile
   prova [numeri]   lancia le 25 domande di prova e scrive lavoro/resoconto_prova.md
+  riformulazioni   le 25 domande chieste in altri due modi, una formale e una colloquiale
+  fuori            dieci domande su cose che nelle fatture non ci sono
   domanda "..."    una domanda da riga di comando
   registro [n]     ultime righe del registro di domande, interrogazioni e risultati
   diario           messaggi del server

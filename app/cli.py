@@ -3,6 +3,8 @@
   python -m app.cli verifica            numeri del caricamento e delle quattro regole
   python -m app.cli domanda "..."       una domanda, con cifre, interrogazioni e fatture
   python -m app.cli prova [numeri...]   le 25 domande di prova, con resoconto in lavoro/resoconto_prova.md
+  python -m app.cli riformulazioni      le 25 domande chieste in altri due modi (prove/riformulazioni.json)
+  python -m app.cli fuori               dieci domande su cose che nelle fatture non ci sono (prove/fuori_dai_dati.json)
 """
 import asyncio
 import json
@@ -57,7 +59,10 @@ def giudica(domanda: dict, scheda: dict) -> tuple[str, str]:
     attese = domanda["cifre_attese"]
     if not attese:
         ha_importi = re.search(r"\d[\d.]*,\d{2}\s?€|€\s?\d", scheda["testo"])
-        return ("sbagliata", "doveva dire che non c'è, ma dà un importo") if ha_importi else ("giusta", "")
+        lo_dice = re.search(r"(?i)\bnon (c'è|ci sono|lo so|so|posso|risult|compa|conosco|ho |sono |è possibile|si può|si possono|si ricava|si vede|dicono|riport)|solo (le fatture|gli acquisti)", scheda["testo"])
+        if not lo_dice:
+            return "sbagliata", "non dice chiaramente che il dato non c'è"
+        return "giusta", ("dice che non c'è, ma aggiunge un importo non richiesto" if ha_importi else "")
     mancanti = cifre_presenti(scheda["testo"], attese)
     if not mancanti:
         return "giusta", ""
@@ -66,19 +71,21 @@ def giudica(domanda: dict, scheda: dict) -> tuple[str, str]:
     return "sbagliata", "mancano: " + ", ".join(str(m) for m in mancanti)
 
 
-async def prova(quali: list[int]):
+async def prova(quali: list[int], file_domande=None, nome="prova", con_storia=True):
     numeri, agente = prepara()
-    domande = json.loads(DOMANDE.read_text(encoding="utf-8"))
+    resoconto = LAVORO / f"resoconto_{nome}.md"
+    domande = json.loads((RADICE / file_domande if file_domande else DOMANDE).read_text(encoding="utf-8"))
     if quali:
         domande = [d for d in domande if d["numero"] in quali]
     esiti, schede = [], []
     for d in domande:
         t = time.monotonic()
-        scheda = await agente.rispondi(d["domanda"], per_la_storia(schede, agente.imp.get("domande_ricordate", 4)))
+        storia = per_la_storia(schede, agente.imp.get("domande_ricordate", 4)) if con_storia else []
+        scheda = await agente.rispondi(d["domanda"], storia)
         schede.append(scheda)
         giudizio, motivo = giudica(d, scheda)
         esiti.append((d, scheda, giudizio, motivo, time.monotonic() - t))
-        print(f"{d['numero']:>2} {giudizio:<15} {esiti[-1][4]:5.1f}s  {d['domanda']}\n   → {scheda['testo']}" + (f"\n   ! {motivo}" if motivo else ""), flush=True)
+        print(f"{d['numero']:>3} {giudizio:<15} {esiti[-1][4]:5.1f}s  {d['domanda']}\n   → {scheda['testo']}" + (f"\n   ! {motivo}" if motivo else ""), flush=True)
 
     giuste = sum(1 for e in esiti if e[2] == "giusta")
     sbagliate = [e for e in esiti if e[2] in ("sbagliata", "incompleta")]
@@ -99,8 +106,8 @@ async def prova(quali: list[int]):
         righe += [f"### {d['numero']}. {d['domanda']}", "", f"{g} · {sec:.1f} s" + (f" · {motivo}" if motivo else ""), "",
                   f"> {s['testo']}", "", f"Atteso: {d['cifre_attese']} {d['nota']}".rstrip(), ""]
         righe += [f"```sql\n{q}\n```" for q in s["interrogazioni"]] + [""]
-    RESOCONTO.write_text("\n".join(righe), encoding="utf-8")
-    print(f"\n{giuste} su {len(esiti)} giuste. Resoconto: lavoro/resoconto_prova.md")
+    resoconto.write_text("\n".join(righe), encoding="utf-8")
+    print(f"\n{giuste} su {len(esiti)} giuste. Resoconto: lavoro/{resoconto.name}")
     return giuste, len(esiti)
 
 
@@ -123,6 +130,10 @@ if __name__ == "__main__":
     comando = sys.argv[1] if len(sys.argv) > 1 else ""
     if comando == "prova":
         asyncio.run(prova([int(x) for x in sys.argv[2:]]))
+    elif comando == "riformulazioni":   # ogni domanda è indipendente: nessuna memoria delle precedenti
+        asyncio.run(prova([], "prove/riformulazioni.json", "riformulazioni", con_storia=False))
+    elif comando == "fuori":
+        asyncio.run(prova([], "prove/fuori_dai_dati.json", "fuori_dai_dati", con_storia=False))
     elif comando == "domanda" and len(sys.argv) > 2:
         asyncio.run(domanda(" ".join(sys.argv[2:])))
     elif comando == "verifica":

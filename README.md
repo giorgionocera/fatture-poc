@@ -44,6 +44,8 @@ Se il modello non risponde durante la prima analisi, cifre e schede escono comun
 | `./demo test` | Test automatici: caricamento, quattro regole, sola lettura, controllo delle cifre, agente |
 | `./demo verifica` | Numeri del caricamento e totale recuperabile |
 | `./demo prova [numeri]` | Lancia le 25 domande di prova e scrive `lavoro/resoconto_prova.md` |
+| `./demo riformulazioni` | Le 25 domande chieste in altri due modi; resoconto in `lavoro/resoconto_riformulazioni.md` |
+| `./demo fuori` | Dieci domande su cose che nelle fatture non ci sono; resoconto in `lavoro/resoconto_fuori_dai_dati.md` |
 | `./demo domanda "..."` | Una domanda da riga di comando, con interrogazioni e fatture |
 | `./demo registro [n]` | Ultime righe del registro (`lavoro/registro.jsonl`) |
 | `./demo diario` | Messaggi del server |
@@ -57,9 +59,9 @@ Se il modello non risponde durante la prima analisi, cifre e schede escono comun
 | Controllo delle cifre | `./demo test` (`tests/test_cifre.py`, `tests/test_agente.py`: un numero inventato non arriva a schermo) | automatico |
 | Sola lettura | `./demo test` (`tests/test_strumenti.py`) | automatico |
 | Reset | `./demo reset` | comando |
-| Domande di prova, almeno 23 su 25 | `./demo prova` con la chiave in `.env`, poi leggere `lavoro/resoconto_prova.md` | **da eseguire con il modello di frontiera** |
-| Riformulazioni | Rifare a mano le domande con altre parole (`./demo domanda "..."`) | da eseguire |
-| Fuori dai dati, 10 su 10 | Dieci domande su vendite, stipendi, clienti, margini con `./demo domanda "..."`: deve dire che non c'è | da eseguire |
+| Domande di prova, almeno 23 su 25 | `./demo prova`, poi leggere `lavoro/resoconto_prova.md` | 25 su 25 con Sonnet 5.5 (26/11/2026); da ripetere sul portatile del palco |
+| Riformulazioni | `./demo riformulazioni` (50 domande in `prove/riformulazioni.json`) | 49 su 50, la cinquantesima è giusta per come è scritta la domanda |
+| Fuori dai dati, 10 su 10 | `./demo fuori` (10 domande in `prove/fuori_dai_dati.json`) | 10 su 10 |
 | Tempi | Colonna "Secondi" del resoconto; `secondi` in `lavoro/registro.jsonl` per la prima analisi | da eseguire sul portatile del palco |
 | Indipendenza | Clonare il repository su un portatile senza la demo 1 e fare `./demo avvia` | da eseguire |
 | Proiettore | Guardare dall'ultima fila cifre, grafici e "Come l'ho calcolato" | da eseguire in sala |
@@ -84,6 +86,7 @@ app/
   cli.py           batteria di prova e comandi da terminale
   static/          pagina, lettore della fattura, stile, grafici, caratteri (tutto locale)
 tests/             test automatici
+prove/             riformulazioni e domande fuori dai dati
 contesto/          specifica, fatture e numeri attesi (non si modifica)
 lavoro/            fatture caricate, base dati, stato, registro, resoconti (non versionata)
 registrazioni/     l'ultima prima analisi riuscita, per il replay

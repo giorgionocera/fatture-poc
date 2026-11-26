@@ -2,7 +2,7 @@
 
 Applicazione dimostrativa per un intervento dal vivo a CNA Latina (artigiani e piccole imprese, non tecnici). Chi presenta trascina una cartella con le 196 fatture elettroniche ricevute in un anno da un centro estetico inventato (Brezza Estetica S.r.l.); l'app le legge, mostra tre scoperte con una cifra finale di soldi recuperabili (2.733,66 €) e poi risponde a domande libere del pubblico, mostrando da dove viene ogni cifra. Dura 6 minuti, gira su un portatile (Apple M4 Pro, 48 GB, macOS).
 
-**Stato:** l'applicazione è costruita e gira in Docker (`./demo avvia`, porta 8002). I test automatici passano; sulla batteria delle 25 domande Sonnet 5.5 (profilo predefinito) ha fatto 24 su 25. Restano da provare riformulazioni e domande fuori dai dati. Comandi e struttura in `README.md`, scelte in `DECISIONI.md`.
+**Stato:** l'applicazione è costruita e gira in Docker (`./demo avvia`, porta 8002). I test automatici passano; con Sonnet 5.5 (profilo predefinito) la batteria fa 25 su 25, le riformulazioni 49 su 50 e le domande fuori dai dati 10 su 10. Dopo ogni modifica al prompt vanno rilanciate tutte e tre (`./demo prova`, `./demo riformulazioni`, `./demo fuori`). Comandi e struttura in `README.md`, scelte in `DECISIONI.md`.
 
 ## Dove sta cosa
 

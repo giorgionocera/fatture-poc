@@ -76,4 +76,13 @@ Scelte non coperte dalla specifica, prese con il criterio "la più semplice e la
 - **Profilo locale (`gemma4:26b` su Ollama): solo per lo sviluppo, non per il palco.** Sulla batteria: 8 domande giuste su 25 senza "ragionamento" (2–9 secondi a domanda); con il ragionamento acceso 17–33 secondi a domanda, oltre il limite di 20. Il controllo delle cifre impedisce comunque che una cifra inventata vada a schermo, ma troppe domande restano senza una risposta utile. Si attiva con `PROFILO=locale ./demo avvia`.
 - **`parametri` nel profilo**: valori in più passati al modello così come sono (per il locale, `reasoning_effort = "none"`).
 - **Il giudice della batteria** (`app/cli.py`) segna "giusta" solo se la risposta contiene tutte le cifre attese; accetta i numeri scritti in lettere ("sei fornitori") e la stessa cifra con più decimali (52,43% per 52,4%). "Incompleta" vuol dire che manca una cifra, non che ce ne sia una sbagliata.
-- **Non ancora eseguiti**: le riformulazioni di ogni domanda e le dieci domande fuori dai dati (sezione 9 della specifica).
+- **Riformulazioni e domande fuori dai dati** (sezione 9 della specifica), eseguite il 26/11/2026 con Sonnet 5.5. Le domande stanno in `prove/` e si rilanciano con `./demo riformulazioni` e `./demo fuori`; ogni domanda è indipendente, senza memoria delle precedenti.
+
+  | Prova | Esito | Tempi |
+  | --- | --- | --- |
+  | 50 riformulazioni (per ogni domanda una formale e una colloquiale o sgrammaticata) | 49 con le cifre attese; la cinquantesima ("i solari presi st'estate") risponde 18 a luglio, che è giusto: la domanda scritta da me restringeva il periodo | 2–10 s |
+  | 10 domande fuori dai dati | 10 su 10 dicono chiaramente che il dato non c'è; una aggiunge una cifra non richiesta (la spesa di marzo, vera, alla domanda sugli appuntamenti) | 2–8 s |
+  | Batteria delle 25, rifatta dopo l'ultimo ritocco al prompt | 25 su 25 | media 4,8 s, massimo 8,2 s |
+
+- **Cifre di ripiego quando il dato non c'è**: al primo giro, in 6 domande fuori dai dati su 10 l'agente aggiungeva una cifra "vicina" (l'IVA pagata a chi chiedeva delle tasse, il prezzo della cera a chi chiedeva il prezzo della ceretta). Erano cifre vere, ma non richieste e facili da fraintendere dal vivo. Ora il prompt le vieta, con una sola eccezione: se chiedono un costo e nelle fatture ce n'è una parte (per i dipendenti, l'elaborazione delle buste paga), la dà dicendo cos'è e cosa manca.
+- **Il giudice per le domande fuori dai dati** cerca una frase che dica che il dato non c'è e segnala a parte gli importi aggiunti. È un controllo sul testo: le risposte vanno comunque lette nel resoconto.

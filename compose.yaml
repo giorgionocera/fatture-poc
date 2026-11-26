@@ -20,4 +20,5 @@ services:
       - ./prompt_sistema.txt:/app/prompt_sistema.txt:ro
       - ./app:/app/app:ro
       - ./tests:/app/tests:ro
+      - ./prove:/app/prove:ro
       - ./contesto:/app/contesto:ro

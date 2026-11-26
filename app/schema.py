@@ -33,9 +33,9 @@ SPIEGAZIONI = {
         "la ricerca e cosa sta guardando",
         "le righe trovate (al massimo {righe})"),
     "mostra_grafico": ("Il grafico",
-        "Il modello sceglie barre o linea, un titolo e una ricerca che restituisce etichetta e valore. Il codice esegue "
-        "la ricerca e disegna il grafico nella scheda. Il modello lo usa solo per andamenti nel tempo o confronti tra "
-        "più di tre voci.", "tipo, titolo e dati",
+        "Il modello sceglie barre, linea o torta, un titolo e una ricerca che restituisce etichetta e valore. Il codice "
+        "esegue la ricerca e disegna il grafico nella scheda: linea per gli andamenti nel tempo, barre per i confronti, "
+        "torta per come si divide un totale, con al massimo sei fette (le altre vanno in «Altre»).", "tipo, titolo e dati",
         "nulla: il grafico va a schermo"),
 }
 

@@ -143,7 +143,10 @@ class Agente:
                                      if len(r) >= 2 and isinstance(r[1], (int, float))]
                             if not punti:
                                 raise ErroreInterrogazione("Il grafico vuole due colonne: etichetta e valore numerico.")
-                            grafico = {"tipo": "linea" if argomenti.get("tipo") == "linea" else "barre",
+                            tipo = argomenti.get("tipo") if argomenti.get("tipo") in ("barre", "linea", "torta") else "barre"
+                            if tipo == "torta":
+                                punti, tipo = fette(punti)
+                            grafico = {"tipo": tipo,
                                        "titolo": argomenti.get("titolo", ""), "punti": punti}
                             interrogazioni.append(sql)
                             risultati.append(dati_grafico)
@@ -181,6 +184,19 @@ class Agente:
                                                                 "righe": ultima["risultato"]["righe"][:30]})
             return scheda("limite", SENZA_DATI)
         return scheda("limite", TROPPI_PASSI)
+
+
+def fette(punti: list[dict], massimo: int = 6) -> tuple[list[dict], str]:
+    """Le fette di una torta: valori positivi, dal più grande; oltre `massimo` le ultime si sommano in «Altre».
+    Con meno di tre parti la torta non dice nulla: si torna alle barre."""
+    positivi = sorted((p for p in punti if p["valore"] > 0), key=lambda p: -p["valore"])
+    if len(positivi) < 3:
+        return punti, "barre"
+    if len(positivi) > massimo:
+        resto = positivi[massimo - 1:]
+        positivi = positivi[:massimo - 1] + [{"etichetta": f"Altre ({len(resto)})",
+                                              "valore": round(sum(p["valore"] for p in resto), 2), "altre": True}]
+    return positivi, "torta"
 
 
 def per_la_storia(schede: list[dict], quante: int) -> list[dict]:

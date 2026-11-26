@@ -46,6 +46,7 @@ Scelte non coperte dalla specifica, prese con il criterio "la più semplice e la
 - **Memoria**: al modello passano gli ultimi 4 scambi riusciti (`domande_ricordate`), per domande come "di che colore ne compro di più?" dopo gli smalti.
 - **Sola lettura a tre livelli**: base dati aperta in sola lettura, solo SELECT (o WITH … SELECT), e un controllo di SQLite che rifiuta ogni azione diversa dalla lettura.
 - **Grafico**: al massimo 24 punti; i suoi valori contano come risultati per il controllo delle cifre.
+- **Grafico a torta**, chiesto da chi presenta: terzo tipo di `mostra_grafico`, accanto a barre e linea, per come si divide un totale. Le torte si leggono male con molte fette o con valori vicini, quindi il codice tiene al massimo sei fette, dalla più grande, e somma le altre in «Altre (n)», in grigio; con meno di tre parti disegna le barre. I sei colori sono la sequenza categorica della guida ai grafici, verificata sul fondo delle schede anche per chi distingue male i colori (anche le coppie che si toccano chiudendo il cerchio). Alcuni hanno poco contrasto sul fondo chiaro: per questo accanto alla torta c'è sempre l'elenco con nome, valore e percentuale. Al centro, il totale. Il prompt chiede la torta per come si divide un totale e la fa quando la si chiede.
 
 ## Pagina
 

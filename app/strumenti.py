@@ -44,9 +44,10 @@ STRUMENTI = [
             "required": ["sql", "cosa_cerco"]}}},
     {"type": "function", "function": {
         "name": "mostra_grafico",
-        "description": "Disegna un grafico a schermo. Solo per andamenti nel tempo o confronti tra più di tre voci.",
+        "description": "Disegna un grafico a schermo. Linea per andamenti nel tempo; barre per confronti tra più di tre voci; "
+                       "torta solo per come si divide un totale in parti (valori positivi; oltre cinque parti le altre finiscono in «Altre»).",
         "parameters": {"type": "object", "properties": {
-            "tipo": {"type": "string", "enum": ["barre", "linea"]},
+            "tipo": {"type": "string", "enum": ["barre", "linea", "torta"]},
             "titolo": {"type": "string"},
             "sql": {"type": "string", "description": "Una SELECT che restituisce due colonne: etichetta e valore."}},
             "required": ["tipo", "titolo", "sql"]}}},

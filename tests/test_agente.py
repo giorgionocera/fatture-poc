@@ -136,3 +136,24 @@ async def test_provenienza_dall_interrogazione_della_cifra_principale(agente):
     s = await a.rispondi("Quanto spendo di caffè?")
     assert s["esito"] == "ok" and s["cifra"] == "552,00 €"
     assert s["come"]["totale"] == 552.00
+
+
+def test_fette_della_torta():
+    from app.agente import fette
+    voci = [{"etichetta": f"voce {i}", "valore": v} for i, v in enumerate([10, 50, 0, 30, 5, 20, 8, 2, -3])]
+    punti, tipo = fette(voci)
+    assert tipo == "torta"
+    assert [p["valore"] for p in punti] == [50, 30, 20, 10, 8, 7]        # dal più grande; 5 + 2 finiscono in «Altre»
+    assert punti[-1]["etichetta"] == "Altre (2)" and punti[-1]["altre"]
+    assert fette(voci[:2]) == (voci[:2], "barre")                         # due fette: meglio le barre
+
+
+async def test_grafico_a_torta(agente):
+    a = agente(chiama("mostra_grafico", tipo="torta", titolo="Spesa per voce",
+                      sql="SELECT categoria, ROUND(SUM(imponibile), 2) FROM fatture_valide GROUP BY 1 ORDER BY 2 DESC"),
+               dice("L'affitto è la voce più grande: **16.800,00 €**."))
+    s = await a.rispondi("Come si divide la spesa? Fammi una torta")
+    g = s["grafico"]
+    assert g["tipo"] == "torta" and len(g["punti"]) == 6
+    assert g["punti"][0] == {"etichetta": "Affitto", "valore": 16800.0}
+    assert round(sum(p["valore"] for p in g["punti"]), 2) == 67808.52      # le fette sommano al totale

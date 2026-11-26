@@ -129,10 +129,57 @@
     contenitore.append(s);
   }
 
+  // Torta (ad anello): come si divide un totale, al massimo sei fette, dalla più grande, in senso orario da mezzogiorno.
+  // Colori categorici in ordine fisso, controllati per chi distingue male i colori; «Altre» in grigio.
+  // Accanto, l'elenco con nome, valore e percentuale: la fetta non si legge mai dal solo colore.
+  const COLORI_TORTA = ["#257de0", "#f47230", "#00b894", "#f2a600", "#ee7fac", "#008a17"];
+  const GRIGIO_ALTRE = "#8C857C";
+
+  function torta(contenitore, g) {
+    const totale = g.punti.reduce((t, p) => t + p.valore, 0);
+    const decimali = g.punti.every(p => Number.isInteger(p.valore)) ? 0 : 2;
+    const quota = v => numero(100 * v / totale, 1) + "%";
+    const L = 300, c = L / 2, R = 142, r = 82;
+    const scatola = crea("div", "torta-corpo");
+    const s = svg("svg", { viewBox: `0 0 ${L} ${L}`, width: L, height: L, role: "img", "aria-label": g.titolo || "Come si divide il totale" });
+    const elenco = crea("div", "torta-elenco");
+    const pezzi = [];
+    let inizio = -Math.PI / 2;
+    const punto = (raggio, angolo) => `${c + raggio * Math.cos(angolo)},${c + raggio * Math.sin(angolo)}`;
+    g.punti.forEach((p, i) => {
+      const colore = p.altre ? GRIGIO_ALTRE : COLORI_TORTA[i % COLORI_TORTA.length];
+      const ampiezza = 2 * Math.PI * p.valore / totale, fine = inizio + ampiezza, grande = ampiezza > Math.PI ? 1 : 0;
+      const fetta = svg("path", { class: "fetta", fill: colore,
+        d: `M${punto(R, inizio)} A${R},${R} 0 ${grande} 1 ${punto(R, fine)} L${punto(r, fine)} A${r},${r} 0 ${grande} 0 ${punto(r, inizio)} Z` });
+      s.append(fetta);
+      inizio = fine;
+      const riga = crea("div", "torta-riga");
+      const campione = crea("span", "campione"); campione.style.background = colore;
+      riga.append(campione, crea("span", "nome", etichetta(p.etichetta)), crea("span", "valore", numero(p.valore, decimali)), crea("span", "quota", quota(p.valore)));
+      elenco.append(riga);
+      const testo = `${etichetta(p.etichetta)}: ${numero(p.valore, decimali)} (${quota(p.valore)})`;
+      pezzi.push([fetta, riga]);
+      const accendi = (e) => {
+        pezzi.forEach(([f, rr], k) => { f.classList.toggle("spenta", k !== i); rr.classList.toggle("accesa", k === i); });
+        mostraFumetto(testo, e.clientX, e.clientY);
+      };
+      const spegni = () => { pezzi.forEach(([f, rr]) => { f.classList.remove("spenta"); rr.classList.remove("accesa"); }); nascondiFumetto(); };
+      for (const bersaglio of [fetta, riga]) { bersaglio.addEventListener("mousemove", accendi); bersaglio.addEventListener("mouseleave", spegni); }
+    });
+    const centro = svg("text", { x: c, y: c + 4, "text-anchor": "middle", class: "torta-totale" });
+    centro.textContent = numero(totale, decimali);
+    const sotto = svg("text", { x: c, y: c + 32, "text-anchor": "middle", class: "torta-sotto" });
+    sotto.textContent = "in tutto";
+    s.append(centro, sotto);
+    scatola.append(s, elenco);
+    contenitore.append(scatola);
+  }
+
   window.disegnaGrafico = function (g) {
-    const scatola = crea("div", "grafico " + (g.tipo === "linea" ? "linea" : "barre-scatola"));
+    const forma = { linea, torta }[g.tipo] || barre;
+    const scatola = crea("div", "grafico " + (g.tipo === "linea" ? "linea" : g.tipo === "torta" ? "torta" : "barre-scatola"));
     if (g.titolo) scatola.append(crea("div", "grafico-titolo", g.titolo));
-    (g.tipo === "linea" ? linea : barre)(scatola, g);
+    forma(scatola, g);
     return scatola;
   };
 })();
